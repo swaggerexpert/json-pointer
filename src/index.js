@@ -12,6 +12,8 @@ export { default as testArrayLocation } from './test/array-location.js';
 export { default as testArrayIndex } from './test/array-index.js';
 export { default as testArrayDash } from './test/array-dash.js';
 
+export { default as compile } from './compile.js';
+
 export { default as escape } from './escape.js';
 export { default as unescape } from './unescape.js';
 
