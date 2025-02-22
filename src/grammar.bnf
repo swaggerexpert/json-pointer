@@ -1,0 +1,16 @@
+; JavaScript Object Notation (JSON) Pointer ABNF syntax
+; https://datatracker.ietf.org/doc/html/rfc6901
+json-pointer    = *( "/" reference-token )
+reference-token = *( unescaped / escaped )
+unescaped       = %x00-2E / %x30-7D / %x7F-10FFFF
+                ; %x2F ('/') and %x7E ('~') are excluded from 'unescaped'
+escaped         = "~" ( "0" / "1" )
+                ; representing '~' and '/', respectively
+
+; https://datatracker.ietf.org/doc/html/rfc6901#section-4
+array-location  = array-index / array-dash
+array-index     = %x30 / ( %x31-39 *(%x30-39) )
+                ; "0", or digits without a leading "0"
+array-dash      = "-"
+
+
