@@ -7,7 +7,7 @@ describe('URI Fragment Identifier (to/from)', function () {
     specify(
       'should convert JSON Pointer to URI Fragment without modifying "~" and "/"',
       function () {
-        assert.strictEqual(URIFragmentIdentifier.to('/a~b/c'), '#/a~b/c'); // ✅ Now correct
+        assert.strictEqual(URIFragmentIdentifier.to('/a~b/c'), '#/a~b/c');
       },
     );
 
@@ -22,7 +22,7 @@ describe('URI Fragment Identifier (to/from)', function () {
 
   context('from()', function () {
     specify('should decode URI but preserve "~0" and "~1"', function () {
-      assert.strictEqual(URIFragmentIdentifier.from('#/a~0b~1c'), '/a~0b~1c'); // ✅ Now correct
+      assert.strictEqual(URIFragmentIdentifier.from('#/a~0b~1c'), '/a~0b~1c');
     });
 
     specify('should decode "%20" as space', function () {
