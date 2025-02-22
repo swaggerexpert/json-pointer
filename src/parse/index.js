@@ -7,10 +7,7 @@ import referenceTokenListEvaluator from './evaluators/reference-token-list.js';
 
 const grammar = new Grammar();
 
-const parse = (
-  jsonPointer,
-  { evaluator = referenceTokenListEvaluator, tokenDecoder = null } = {},
-) => {
+const parse = (jsonPointer, { evaluator = referenceTokenListEvaluator } = {}) => {
   const parser = new Parser();
 
   parser.ast = new AST();
@@ -24,7 +21,7 @@ const parse = (
     return { result, ast, computed: null };
   }
 
-  const computed = evaluator(ast, { result, tokenDecoder });
+  const computed = evaluator(ast, { result });
 
   return { result, ast, computed };
 };

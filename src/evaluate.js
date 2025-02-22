@@ -6,9 +6,9 @@ import testArrayIndex from './test/array-index.js';
 const evaluate = (
   value,
   jsonPointer,
-  { strictArrays = true, evaluator = referenceTokenListEvaluator, tokenDecoder = null } = {},
+  { strictArrays = true, evaluator = referenceTokenListEvaluator } = {},
 ) => {
-  const { result, computed: referenceTokens } = parse(jsonPointer, { evaluator, tokenDecoder });
+  const { result, computed: referenceTokens } = parse(jsonPointer, { evaluator });
 
   if (!result.success) {
     throw new Error(`Invalid JSON Pointer: ${jsonPointer}`);

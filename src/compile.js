@@ -1,11 +1,11 @@
-import escape from './escape/index.js';
+import escape from './escape.js';
 
-const compile = (tokens, { tokenEncoder = null } = {}) => {
+const compile = (tokens) => {
   if (tokens.length === 0) {
     return '';
   }
 
-  return `/${tokens.map((token) => escape(token, { encoder: tokenEncoder })).join('/')}`;
+  return `/${tokens.map(escape).join('/')}`;
 };
 
 export default compile;
