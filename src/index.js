@@ -23,3 +23,6 @@ export { default as JSONPointerError } from './errors/JSONPointerError.js';
 export { default as JSONPointerParseError } from './errors/JSONPointerParseError.js';
 export { default as JSONPointerCompileError } from './errors/JSONPointerCompileError.js';
 export { default as JSONPointerEvaluateError } from './errors/JSONPointerEvaluateError.js';
+export { default as JSONPointerTypeError } from './errors/JSONPointerTypeError.js';
+export { default as JSONPointerKeyError } from './errors/JSONPointerKeyError.js';
+export { default as JSONPointerIndexError } from './errors/JSONPointerIndexError.js';
