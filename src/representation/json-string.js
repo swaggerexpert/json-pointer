@@ -1,10 +1,10 @@
-const to = (jsonPointer) => {
+export const to = (jsonPointer) => {
   return JSON.stringify(jsonPointer);
 };
 
-const from = (jsonString) => {
+export const from = (jsonString) => {
   try {
-    return JSON.parse(jsonString);
+    return String(JSON.parse(jsonString));
   } catch {
     return jsonString;
   }
