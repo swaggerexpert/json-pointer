@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import { compile } from '../src/index.js';
+import { compile, JSONPointerCompileError } from '../src/index.js';
 
 describe('compile', function () {
   it('should return an empty string for an empty array', function () {
@@ -37,5 +37,9 @@ describe('compile', function () {
 
   it('should retain spaces and special symbols without escaping them', function () {
     assert.strictEqual(compile(['foo bar', 'baz@qux']), '/foo bar/baz@qux');
+  });
+
+  it('should throw error on invalid input', function () {
+    assert.throws(() => compile(null), JSONPointerCompileError);
   });
 });

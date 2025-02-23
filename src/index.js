@@ -18,3 +18,8 @@ export { default as escape } from './escape.js';
 export { default as unescape } from './unescape.js';
 
 export { default as evaluate } from './evaluate.js';
+
+export { default as JSONPointerError } from './errors/JSONPointerError.js';
+export { default as JSONPointerParseError } from './errors/JSONPointerParseError.js';
+export { default as JSONPointerCompileError } from './errors/JSONPointerCompileError.js';
+export { default as JSONPointerEvaluateError } from './errors/JSONPointerEvaluateError.js';
