@@ -200,9 +200,9 @@ escape('/foo'); // => '~1foo'
 Unescape is performed by first transforming any
 occurrence of the sequence `'~1'` to `'/'`, and then transforming any
 occurrence of the sequence `'~0'` to `'~'`.  By performing the
-substitutions in this order, an implementation avoids the error of
+substitutions in this order, this library avoids the error of
 turning `'~01'` first into `'~1'` and then into `'/'`, which would be
-incorrect (the string '~01' correctly becomes '~1' after transformation).
+incorrect (the string `'~01'` correctly becomes `'~1'` after transformation).
 
 ```js
 import { unescape } from '@swaggerexpert/json-pointer';
