@@ -42,7 +42,10 @@
     "pointer",
     "parser",
     "validator",
+    "escaper",
     "evaluator",
+    "compile",
+    "representer",
     "rfc6901"
   ],
   "author": "Vladimír Gorej <vladimir.gorej@gmail.com>",
