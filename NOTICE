@@ -6,6 +6,6 @@ Copy of the Apache 2.0 license can be found in `LICENSE` file.
 JavaScript Object Notation (JSON) Pointer
 Copyright (c) 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.
 https://datatracker.ietf.org/doc/html/rfc6901
-ABNF grammar (grammar.bnf) and certain texts within the README.md file
+Majority of ABNF grammar (grammar.bnf) and certain texts within the README.md file
 are licensed under Simplified BSD License - https://spdx.org/licenses/BSD-2-Clause.html.
 
