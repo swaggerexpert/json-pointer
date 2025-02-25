@@ -7,7 +7,8 @@
 [![try on RunKit](https://img.shields.io/badge/try%20on-RunKit-brightgreen.svg?style=flat)](https://npm.runkit.com/@swaggerexpert/json-pointer)
 [![Tidelift](https://tidelift.com/badges/package/npm/@swaggerexpert%2Fjson-pointer)](https://tidelift.com/subscription/pkg/npm-.swaggerexpert-json-pointer?utm_source=npm-swaggerexpert-json-pointer&utm_medium=referral&utm_campaign=readme)
 
-`@swaggerexpert/json-pointer` is a **parser**, **validator**, **escaper**, **evaluator**, **compiler** and **representer** for [RFC 6901 JavaScript Object Notation (JSON) Pointer](https://datatracker.ietf.org/doc/html/rfc6901).
+`@swaggerexpert/json-pointer` is a **parser**, **validator**, **escaper**, **evaluator**, **compiler** and **representer** for [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901) JavaScript Object Notation (JSON) Pointer.
+Development of this library led to the creation of new [Errata 8314](https://www.rfc-editor.org/errata/eid8314) reported under RFC 6901, providing clarification about JSON String Representation.
 
 <table>
   <tr>
@@ -33,6 +34,7 @@
     - [Evaluation](#evaluation)
     - [Compilation](#compilation)
     - [Representation](#representation)
+    - [Errors](#errors)
     - [Grammar](#grammar)
 - [More about JSON Pointer](#more-about-json-pointer)
 - [License](#license)
@@ -211,6 +213,98 @@ unescape('~0foo'); // => '~foo'
 unescape('~1foo'); // => '/foo'
 ```
 
+#### Evaluation
+
+[comment]: <> (SPDX-FileCopyrightText: Copyright &#40;c&#41; 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.)
+[comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
+
+Evaluation of a JSON Pointer begins with a reference to the root
+value of a JSON document and completes with a reference to some value
+within the document.  Each reference token in the JSON Pointer is
+evaluated sequentially.
+
+```js
+import { evaluate } from '@swaggerexpert/json-pointer';
+
+const value = {
+  "foo": ["bar", "baz"],
+  "": 0,
+  "a/b": 1,
+  "c%d": 2,
+  "e^f": 3,
+  "g|h": 4,
+  "i\\j": 5,
+  "k\"l": 6,
+  " ": 7,
+  "m~n": 8
+};
+
+evaluate(value, ''); // => identical to value
+evaluate(value, '/foo'); // => ["bar", "baz"]
+evaluate(value, '/foo/0'); // => "bar"
+evaluate(value, '/'); // => 0
+evaluate(value, '/a~1b'); // => 1
+evaluate(value, '/c%d'); // => 2
+evaluate(value, '/e^f'); // => 3
+evaluate(value, '/g|h'); // => 4
+evaluate(value, '/i\\j'); // => 5
+evaluate(value, '/k"l'); // => 6
+evaluate(value, '/ '); // => 7
+evaluate(value, '/m~0n'); // => 8
+
+// neither object nor array
+evaluate(null, '/foo'); // => throws JSONPointerTypeError
+// arrays
+evaluate(value, '/foo/2'); // => throws JSONPointerIndexError
+evaluate(value, '/foo/-'); // => throws JSONPointerIndexError
+evaluate(value, '/foo/a'); // => throws JSONPointerIndexError
+// objects
+evaluate(value, '/bar'); // => throws JSONPointerKeyError
+```
+
+**Strict Arrays**
+
+[comment]: <> (SPDX-FileCopyrightText: Copyright &#40;c&#41; 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.)
+[comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
+
+By default, the evaluation is **strict**, meaning error condition will be raised if it fails to
+resolve a concrete value for any of the JSON pointer's reference tokens. For example, if an array
+is referenced with a non-numeric token, an error condition will be raised.
+
+Note that the use of the `"-"` character to index an array will always
+result in such an error condition because by definition it refers to
+a nonexistent array element.
+
+This spec compliant strict behavior can be disabled by setting the `strictArrays` option to `false`.
+
+```js
+evaluate(value, '/foo/2', { strictArrays: false }); // => undefined
+evaluate(value, '/foo/-', { strictArrays: false }); // => undefined
+evaluate(value, '/foo/a', { strictArrays: false }); // => undefined
+```
+
+**Strict Objects**
+
+[comment]: <> (SPDX-FileCopyrightText: Copyright &#40;c&#41; 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.)
+[comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
+
+By default, the evaluation is **strict**, meaning error condition will be raised if it fails to
+resolve a concrete value for any of the JSON pointer's reference tokens.
+For example, if a token references a key that is not present in an object, an error condition will be raised.
+
+This spec compliant strict behavior can be disabled by setting the `strictObjects` option to `false`.
+
+```js
+evaluate(value, '/bar', { strictObjects: false }); // => undefined
+```
+
+`strictObjects` options has no effect in cases where evaluation of previous
+reference token failed to resolve a concrete value.
+
+```js
+evaluate(value, '/bar/baz', { strictObjects: false }); // => throw JSONPointerTypeError
+```
+
 #### Compilation
 
 Compilation is the process of transforming a list of reference tokens into a JSON Pointer.
@@ -221,6 +315,60 @@ import { compile } from '@swaggerexpert/json-pointer';
 
 compile(['~foo', 'bar']); // => '/~0foo/bar'
 ```
+
+#### Representation
+
+**JSON String**
+
+[comment]: <> (SPDX-FileCopyrightText: Copyright &#40;c&#41; 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.)
+[comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
+
+A JSON Pointer can be represented in a JSON string value. Per
+[RFC4627, Section 2.5](https://datatracker.ietf.org/doc/html/rfc4627#section-2.5), all instances of quotation mark `'"'` (%x22),
+reverse solidus `'\'` (%x5C), and control (%x00-1F) characters MUST be
+escaped.
+
+```js
+import { JSONString } from '@swaggerexpert/json-pointer';
+
+JSONString.to('/foo"bar'); // => '"/foo\\"bar"'
+JSONString.from('"/foo\\"bar"'); // => '/foo"bar'
+```
+
+**URI Fragment Identifier**
+
+[comment]: <> (SPDX-FileCopyrightText: Copyright &#40;c&#41; 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.)
+[comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
+
+A JSON Pointer can be represented in a URI fragment identifier by
+encoding it into octets using UTF-8 [RFC3629](https://datatracker.ietf.org/doc/html/rfc3629), while percent-encoding
+those characters not allowed by the fragment rule in [RFC3986](https://datatracker.ietf.org/doc/html/rfc3986).
+
+```js
+import { URIFragmentIdentifier } from '@swaggerexpert/json-pointer';
+
+URIFragmentIdentifier.to('/foo"bar'); // => '#/foo%22bar'
+URIFragmentIdentifier.from('#/foo%22bar'); // => '/foo"bar'
+```
+
+#### Errors
+
+`@swaggerexpert/json-pointer` provides a structured error class hierarchy,
+enabling precise error handling across JSON Pointer operations, including evaluation, parsing, and manipulation.
+
+```js
+import {
+  JSONPointerError,
+  JSONPointerParseError,
+  JSONPointerCompileError,
+  JSONPointerEvaluateError,
+  JSONPointerTypeError,
+  JSONPointerKeyError,
+  JSONPointerIndexError
+} from '@swaggerexpert/json-pointer';
+```
+
+**JSONPointerError** is the base class for all JSON Pointer errors.
 
 #### Grammar
 

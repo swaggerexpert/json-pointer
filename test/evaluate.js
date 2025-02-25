@@ -7,6 +7,8 @@ import {
   JSONPointerKeyError,
   JSONPointerEvaluateError,
   referenceTokenListEvaluator,
+  JSONString,
+  URIFragmentIdentifier,
 } from '../src/index.js';
 import unescape from '../src/unescape.js';
 
@@ -23,6 +25,52 @@ describe('evaluate', function () {
     ' ': 7,
     'm~n': 8,
   };
+
+  context('RCC 6901 JSON String tests', function () {
+    const jsonStringRepEntries = [
+      ['""', data],
+      ['"/foo"', ['bar', 'baz']],
+      ['"/foo/0"', 'bar'],
+      ['"/"', 0],
+      ['"/a~1b"', 1],
+      ['"/c%d"', 2],
+      ['"/e^f"', 3],
+      ['"/g|h"', 4],
+      ['"/i\\\\j"', 5],
+      ['"/k\\"l"', 6],
+      ['"/ "', 7],
+      ['"/m~0n"', 8],
+    ];
+
+    jsonStringRepEntries.forEach(([jsonString, expected]) => {
+      specify('should correctly evaluate JSON Pointer from JSON String', function () {
+        assert.deepEqual(evaluate(data, JSONString.from(jsonString)), expected);
+      });
+    });
+  });
+
+  context('RCC 6901 JSON String tests', function () {
+    const jsonStringRepEntries = [
+      ['#', data],
+      ['#/foo', ['bar', 'baz']],
+      ['#/foo/0', 'bar'],
+      ['#/', 0],
+      ['#/a~1b', 1],
+      ['#/c%25d', 2],
+      ['#/e%5Ef', 3],
+      ['#/g%7Ch', 4],
+      ['#/i%5Cj', 5],
+      ['#/k%22l', 6],
+      ['#/%20', 7],
+      ['#/m~0n', 8],
+    ];
+
+    jsonStringRepEntries.forEach(([fragment, expected]) => {
+      specify('should correctly evaluate JSON Pointer from JSON String', function () {
+        assert.deepEqual(evaluate(data, URIFragmentIdentifier.from(fragment)), expected);
+      });
+    });
+  });
 
   context('valid JSON Pointers', function () {
     specify('should return entire document for ""', function () {

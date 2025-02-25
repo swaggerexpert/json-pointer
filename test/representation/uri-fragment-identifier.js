@@ -19,6 +19,10 @@ describe('URI Fragment Identifier (to/from)', function () {
       assert.strictEqual(URIFragmentIdentifier.to(''), '#');
     });
 
+    specify('should percent encode disallowed character', function () {
+      assert.strictEqual(URIFragmentIdentifier.to('/foo?#'), '#/foo?%23');
+    });
+
     specify('should correctly convert JSON Pointer to URI Fragment (RFC 6901)', function () {
       assert.strictEqual(URIFragmentIdentifier.to(''), '#');
       assert.strictEqual(URIFragmentIdentifier.to('/foo'), '#/foo');
@@ -58,6 +62,10 @@ describe('URI Fragment Identifier (to/from)', function () {
 
     specify('should return the original input if decoding fails', function () {
       assert.strictEqual(URIFragmentIdentifier.from('%E3%81%'), '%E3%81%'); // Malformed UTF-8 sequence
+    });
+
+    specify('should percent decode disallowed percent encoded character', function () {
+      assert.strictEqual(URIFragmentIdentifier.from('#/foo?%23'), '/foo?#');
     });
 
     specify(

@@ -1,12 +1,18 @@
 export const to = (jsonPointer) => {
-  return `#${encodeURI(jsonPointer)}`;
+  const encodedFragment = [...jsonPointer]
+    .map((char) =>
+      /^[A-Za-z0-9\-._~!$&'()*+,;=:@/?]$/.test(char) ? char : encodeURIComponent(char),
+    )
+    .join('');
+
+  return `#${encodedFragment}`;
 };
 
 export const from = (fragment) => {
   const rfc3986Fragment = fragment.startsWith('#') ? fragment.slice(1) : fragment;
 
   try {
-    return decodeURI(rfc3986Fragment);
+    return decodeURIComponent(rfc3986Fragment);
   } catch {
     return fragment;
   }

@@ -6,7 +6,11 @@ import JSONPointerTypeError from './errors/JSONPointerTypeError.js';
 import JSONPointerIndexError from './errors/JSONPointerIndexError.js';
 import JSONPointerKeyError from './errors/JSONPointerKeyError.js';
 
-const evaluate = (value, jsonPointer, { strictArrays = true, evaluator = null } = {}) => {
+const evaluate = (
+  value,
+  jsonPointer,
+  { strictArrays = true, strictObjects = true, evaluator = null } = {},
+) => {
   const parseOptions = typeof evaluator === 'function' ? { evaluator } : undefined;
   const { result, computed: referenceTokens } = parse(jsonPointer, parseOptions);
 
@@ -30,7 +34,7 @@ const evaluate = (value, jsonPointer, { strictArrays = true, evaluator = null } 
         }
       }
 
-      if (!testArrayIndex(referenceToken)) {
+      if (!testArrayIndex(referenceToken) && strictArrays) {
         throw new JSONPointerIndexError(
           `Invalid array index: '${referenceToken}' (MUST be "0", or digits without a leading "0")`,
         );
@@ -43,7 +47,7 @@ const evaluate = (value, jsonPointer, { strictArrays = true, evaluator = null } 
       return current[index];
     }
 
-    if (!Object.prototype.hasOwnProperty.call(current, referenceToken)) {
+    if (!Object.prototype.hasOwnProperty.call(current, referenceToken) && strictObjects) {
       throw new JSONPointerKeyError(referenceToken);
     }
 
