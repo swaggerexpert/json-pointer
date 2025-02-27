@@ -1,4 +1,6 @@
 export type JSONPointer = string;
+export type URIFragmentJSONPointer = string;
+export type StringifiedJSONPointer = string;
 export type ReferenceToken = string;
 export type EscapedReferenceToken = string;
 export type UnescapedReferenceToken = string;
@@ -59,6 +61,19 @@ export type JSONArray = any[];
 export type JSONObject = Record<string, any>;
 
 export function evaluate(value: JSONArray | JSONObject, jsonPointer: JSONPointer, options?: EvaluationOptions): unknown;
+
+/**
+ * Representing
+ */
+export interface JSONString {
+  to(jsonPointer: JSONPointer): StringifiedJSONPointer;
+  from(jsonPointer: StringifiedJSONPointer): JSONPointer
+}
+
+export interface URIFragmentIdentifier {
+  to(jsonPointer: JSONPointer): URIFragmentJSONPointer;
+  from(jsonPointer: URIFragmentJSONPointer): JSONPointer
+}
 
 /**
  * Grammar
