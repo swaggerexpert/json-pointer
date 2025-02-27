@@ -1,9 +1,5 @@
 import JSONPointerEvaluateError from './JSONPointerEvaluateError.js';
 
-class JSONPointerIndexError extends JSONPointerEvaluateError {
-  constructor(message, options) {
-    super(message, options);
-  }
-}
+class JSONPointerIndexError extends JSONPointerEvaluateError {}
 
 export default JSONPointerIndexError;

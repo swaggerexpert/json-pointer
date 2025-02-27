@@ -28,6 +28,14 @@ class JSONPointerError extends Error {
         this.stack = `${this.stack}\nCAUSE: ${cause.stack}`;
       }
     }
+
+    /**
+     * Allows to assign arbitrary properties to the error object.
+     */
+    if (options != null && typeof options === 'object') {
+      const { cause, ...causelessOptions } = options;
+      Object.assign(this, causelessOptions);
+    }
   }
 }
 
