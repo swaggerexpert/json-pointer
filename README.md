@@ -7,8 +7,8 @@
 [![try on RunKit](https://img.shields.io/badge/try%20on-RunKit-brightgreen.svg?style=flat)](https://npm.runkit.com/@swaggerexpert/json-pointer)
 [![Tidelift](https://tidelift.com/badges/package/npm/@swaggerexpert%2Fjson-pointer)](https://tidelift.com/subscription/pkg/npm-.swaggerexpert-json-pointer?utm_source=npm-swaggerexpert-json-pointer&utm_medium=referral&utm_campaign=readme)
 
-`@swaggerexpert/json-pointer` is a **parser**, **validator**, **escaper**, **evaluator**, **compiler** and **representer** for [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901) JavaScript Object Notation (JSON) Pointer.
-Development of this library led to the creation of new [Errata 8314](https://www.rfc-editor.org/errata/eid8314) reported under RFC 6901, providing clarification about JSON String Representation.
+`@swaggerexpert/json-pointer` is a **parser**, **validator**, **evaluator**, **compiler** and **representer** for [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901) JavaScript Object Notation (JSON) Pointer.
+
 
 <table>
   <tr>
@@ -100,6 +100,8 @@ const parseResult = parse('/foo/bar');
 ```
 
 ###### Evaluating AST as list of unescaped reference tokens
+
+One of the ways to interpret the parsed JSON Pointer is to evaluate it as a list of unescaped reference tokens.
 
 ```js
 import { parse } from '@swaggerexpert/json-parse';
@@ -289,8 +291,8 @@ evaluate(value, '/foo/a', { strictArrays: false }); // => undefined
 [comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
 
 By default, the evaluation is **strict**, meaning error condition will be raised if it fails to
-resolve a concrete value for any of the JSON pointer's reference tokens.
-For example, if a token references a key that is not present in an object, an error condition will be raised.
+resolve a concrete value for any of the JSON pointer's reference tokens. For example,
+if a token references a key that is not present in an object, an error condition will be raised.
 
 This spec compliant strict behavior can be disabled by setting the `strictObjects` option to `false`.
 
@@ -354,7 +356,7 @@ URIFragmentIdentifier.from('#/foo%22bar'); // => '/foo"bar'
 #### Errors
 
 `@swaggerexpert/json-pointer` provides a structured error class hierarchy,
-enabling precise error handling across JSON Pointer operations, including evaluation, parsing, and manipulation.
+enabling precise error handling across JSON Pointer operations, including parsing, evaluation and compilation and validation.
 
 ```js
 import {

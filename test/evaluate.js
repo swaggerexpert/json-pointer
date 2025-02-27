@@ -10,7 +10,6 @@ import {
   JSONString,
   URIFragmentIdentifier,
 } from '../src/index.js';
-import unescape from '../src/unescape.js';
 
 describe('evaluate', function () {
   const data = {
@@ -179,9 +178,16 @@ describe('evaluate', function () {
     });
 
     specify(
-      'should throw JSONPointerKeyError for accessing object property that does not exist',
+      'should throw JSONPointerKeyError for accessing chain of object properties that do not exist',
       function () {
         assert.throws(() => evaluate(data, '/missing/key'), JSONPointerKeyError);
+      },
+    );
+
+    specify(
+      'should return undefined accessing object property that does not exist when strictObject is false',
+      function () {
+        assert.isUndefined(evaluate(data, '/missing', { strictObjects: false }));
       },
     );
 
