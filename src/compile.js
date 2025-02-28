@@ -7,7 +7,14 @@ const compile = (referenceTokens) => {
       return '';
     }
 
-    return `/${referenceTokens.map(escape).join('/')}`;
+    return `/${referenceTokens
+      .map((referenceToken) => {
+        if (typeof referenceToken !== 'string' && typeof referenceToken !== 'number') {
+          throw new TypeError('Reference token must be a string or number');
+        }
+        return escape(String(referenceToken));
+      })
+      .join('/')}`;
   } catch (error) {
     throw new JSONPointerCompileError('Unknown error during JSON Pointer compilation', {
       cause: error,

@@ -2,7 +2,10 @@ import JSONPointerEvaluateError from './JSONPointerEvaluateError.js';
 
 class JSONPointerTypeError extends JSONPointerEvaluateError {
   constructor(referenceToken, options) {
-    super(`Invalid reference token: '${referenceToken}' (not an object/array)`, options);
+    super(
+      `Reference token '${referenceToken}' cannot be applied to non object/array value)`,
+      options,
+    );
   }
 }
 

@@ -9,9 +9,8 @@ export const to = (jsonPointer) => {
 };
 
 export const from = (fragment) => {
-  const rfc3986Fragment = fragment.startsWith('#') ? fragment.slice(1) : fragment;
-
   try {
+    const rfc3986Fragment = fragment.startsWith('#') ? fragment.slice(1) : fragment;
     return decodeURIComponent(rfc3986Fragment);
   } catch {
     return fragment;

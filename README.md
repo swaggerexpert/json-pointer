@@ -356,7 +356,7 @@ URIFragmentIdentifier.from('#/foo%22bar'); // => '/foo"bar'
 #### Errors
 
 `@swaggerexpert/json-pointer` provides a structured error class hierarchy,
-enabling precise error handling across JSON Pointer operations, including parsing, evaluation and compilation and validation.
+enabling precise error handling across JSON Pointer operations, including parsing, evaluation ,compilation and validation.
 
 ```js
 import {
