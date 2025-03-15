@@ -28,6 +28,7 @@ const evaluate = (
             'Invalid array index: "-" always refers to a nonexistent element during evaluation',
             {
               jsonPointer,
+              referenceTokens,
               referenceToken,
               referenceTokenPosition,
             },
@@ -42,6 +43,7 @@ const evaluate = (
           `Invalid array index: '${referenceToken}' (MUST be "0", or digits without a leading "0")`,
           {
             jsonPointer,
+            referenceTokens,
             referenceToken,
             referenceTokenPosition,
           },
@@ -52,6 +54,7 @@ const evaluate = (
       if (index >= current.length && strictArrays) {
         throw new JSONPointerIndexError(`Invalid array index: '${index}' out of bounds`, {
           jsonPointer,
+          referenceTokens,
           referenceToken: index,
           referenceTokenPosition,
         });
@@ -63,6 +66,7 @@ const evaluate = (
       if (!Object.prototype.hasOwnProperty.call(current, referenceToken) && strictObjects) {
         throw new JSONPointerKeyError(undefined, referenceToken, {
           jsonPointer,
+          referenceTokens,
           referenceToken,
           referenceTokenPosition,
         });
@@ -73,6 +77,7 @@ const evaluate = (
 
     throw new JSONPointerTypeError(undefined, referenceToken, {
       jsonPointer,
+      referenceTokens,
       referenceToken,
       referenceTokenPosition,
       currentValue: current,
