@@ -15,19 +15,23 @@ const evaluate = (
   const { result, computed: referenceTokens } = parse(jsonPointer, parseOptions);
 
   if (!result.success) {
-    throw new JSONPointerEvaluateError(`Invalid JSON Pointer: ${jsonPointer}`);
+    throw new JSONPointerEvaluateError(`Invalid JSON Pointer: ${jsonPointer}`, {
+      jsonPointer,
+    });
   }
 
-  return referenceTokens.reduce((current, referenceToken) => {
-    if (typeof current !== 'object' || current === null) {
-      throw new JSONPointerTypeError(referenceToken);
-    }
-
+  return referenceTokens.reduce((current, referenceToken, referenceTokenPosition) => {
     if (Array.isArray(current)) {
       if (testArrayDash(referenceToken)) {
         if (strictArrays) {
           throw new JSONPointerIndexError(
             'Invalid array index: "-" always refers to a nonexistent element during evaluation',
+            {
+              jsonPointer,
+              referenceTokens,
+              referenceToken,
+              referenceTokenPosition,
+            },
           );
         } else {
           return current[current.length];
@@ -37,21 +41,47 @@ const evaluate = (
       if (!testArrayIndex(referenceToken) && strictArrays) {
         throw new JSONPointerIndexError(
           `Invalid array index: '${referenceToken}' (MUST be "0", or digits without a leading "0")`,
+          {
+            jsonPointer,
+            referenceTokens,
+            referenceToken,
+            referenceTokenPosition,
+          },
         );
       }
 
       const index = Number(referenceToken);
       if (index >= current.length && strictArrays) {
-        throw new JSONPointerIndexError(`Invalid array index: '${index}' out of bounds`);
+        throw new JSONPointerIndexError(`Invalid array index: '${index}' out of bounds`, {
+          jsonPointer,
+          referenceTokens,
+          referenceToken: index,
+          referenceTokenPosition,
+        });
       }
       return current[index];
     }
 
-    if (!Object.prototype.hasOwnProperty.call(current, referenceToken) && strictObjects) {
-      throw new JSONPointerKeyError(referenceToken);
+    if (typeof current === 'object' && current !== null) {
+      if (!Object.prototype.hasOwnProperty.call(current, referenceToken) && strictObjects) {
+        throw new JSONPointerKeyError(undefined, {
+          jsonPointer,
+          referenceTokens,
+          referenceToken,
+          referenceTokenPosition,
+        });
+      }
+
+      return current[referenceToken];
     }
 
-    return current[referenceToken];
+    throw new JSONPointerTypeError(undefined, {
+      jsonPointer,
+      referenceTokens,
+      referenceToken,
+      referenceTokenPosition,
+      currentValue: current,
+    });
   }, value);
 };
 

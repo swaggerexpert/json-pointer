@@ -2,6 +2,10 @@ import escape from './escape.js';
 import JSONPointerCompileError from './errors/JSONPointerCompileError.js';
 
 const compile = (referenceTokens) => {
+  if (!Array.isArray(referenceTokens)) {
+    throw new TypeError('Reference tokens must be a list of strings or numbers');
+  }
+
   try {
     if (referenceTokens.length === 0) {
       return '';
@@ -16,8 +20,9 @@ const compile = (referenceTokens) => {
       })
       .join('/')}`;
   } catch (error) {
-    throw new JSONPointerCompileError('Unknown error during JSON Pointer compilation', {
+    throw new JSONPointerCompileError('Unexpected error during JSON Pointer compilation', {
       cause: error,
+      referenceTokens,
     });
   }
 };
