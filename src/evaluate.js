@@ -64,7 +64,7 @@ const evaluate = (
 
     if (typeof current === 'object' && current !== null) {
       if (!Object.prototype.hasOwnProperty.call(current, referenceToken) && strictObjects) {
-        throw new JSONPointerKeyError(undefined, referenceToken, {
+        throw new JSONPointerKeyError(undefined, {
           jsonPointer,
           referenceTokens,
           referenceToken,
@@ -75,7 +75,7 @@ const evaluate = (
       return current[referenceToken];
     }
 
-    throw new JSONPointerTypeError(undefined, referenceToken, {
+    throw new JSONPointerTypeError(undefined, {
       jsonPointer,
       referenceTokens,
       referenceToken,
