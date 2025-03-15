@@ -10,7 +10,7 @@ const grammar = new Grammar();
 
 const parse = (jsonPointer, { evaluator = referenceTokenListEvaluator } = {}) => {
   if (typeof jsonPointer !== 'string') {
-    throw new JSONPointerParseError('JSON Pointer must be a string');
+    throw new TypeError('JSON Pointer must be a string');
   }
 
   try {
@@ -31,7 +31,10 @@ const parse = (jsonPointer, { evaluator = referenceTokenListEvaluator } = {}) =>
 
     return { result, ast, computed };
   } catch (error) {
-    throw new JSONPointerParseError('Unknown error during JSON Pointer parsing', { cause: error });
+    throw new JSONPointerParseError('Unexpected error during JSON Pointer parsing', {
+      cause: error,
+      jsonPointer,
+    });
   }
 };
 

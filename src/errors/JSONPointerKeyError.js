@@ -1,8 +1,15 @@
 import JSONPointerEvaluateError from './JSONPointerEvaluateError.js';
 
 class JSONPointerKeyError extends JSONPointerEvaluateError {
-  constructor(referenceToken, options) {
-    super(`Invalid object key: '${referenceToken}' not found`, options);
+  constructor(message, options) {
+    if (
+      typeof message === 'undefined' &&
+      (typeof options?.referenceToken === 'string' || typeof options?.referenceToken === 'number')
+    ) {
+      message = `Invalid object key: '${options.referenceToken}' not found`;
+    }
+
+    super(message, options);
   }
 }
 

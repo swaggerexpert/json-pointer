@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import { parse, JSONPointerParseError } from '../src/index.js';
+import { parse } from '../src/index.js';
 
 describe('parse', function () {
   context('given valid source string', function () {
@@ -229,10 +229,10 @@ describe('parse', function () {
 
   context('given non-string input', function () {
     specify('should throw error', function () {
-      assert.throws(() => parse([]), JSONPointerParseError);
-      assert.throws(() => parse(1), JSONPointerParseError);
-      assert.throws(() => parse(null), JSONPointerParseError);
-      assert.throws(() => parse(undefined), JSONPointerParseError);
+      assert.throws(() => parse([]), TypeError);
+      assert.throws(() => parse(1), TypeError);
+      assert.throws(() => parse(null), TypeError);
+      assert.throws(() => parse(undefined), TypeError);
     });
   });
 });

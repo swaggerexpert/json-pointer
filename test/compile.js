@@ -40,6 +40,6 @@ describe('compile', function () {
   });
 
   it('should throw error on invalid input', function () {
-    assert.throws(() => compile(null), JSONPointerCompileError);
+    assert.throws(() => compile(null), TypeError);
   });
 });
