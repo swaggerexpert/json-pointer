@@ -307,6 +307,8 @@ reference token failed to resolve a concrete value.
 evaluate(value, '/bar/baz', { strictObjects: false }); // => throw JSONPointerTypeError
 ```
 
+##### Evaluation Realms
+
 #### Compilation
 
 Compilation is the process of transforming a list of reference tokens into a JSON Pointer.

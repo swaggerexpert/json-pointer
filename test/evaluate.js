@@ -2,6 +2,7 @@ import { assert } from 'chai';
 
 import {
   evaluate,
+  JSONEvaluationRealm,
   JSONPointerIndexError,
   JSONPointerTypeError,
   JSONPointerKeyError,
@@ -121,7 +122,7 @@ describe('evaluate', function () {
     });
   });
 
-  context('custom evaluator option', function () {
+  context('given custom evaluator option', function () {
     specify('should correctly use a default evaluator', function () {
       const result = evaluate(data, '/a~1b', { evaluator: referenceTokenListEvaluator });
 
@@ -138,6 +139,20 @@ describe('evaluate', function () {
       };
 
       assert.throws(() => evaluate(data, '/a~1b', { evaluator }), JSONPointerKeyError);
+    });
+  });
+
+  context('given custom realm option', function () {
+    specify('should use custom realm', function () {
+      const result = evaluate(data, '/a~1b', { realm: new JSONEvaluationRealm() });
+
+      assert.deepEqual(result, 1);
+    });
+
+    specify('should throw on invalid custom realm', function () {
+      const realm = {};
+
+      assert.throws(() => evaluate(data, '/a~1b', { realm }), JSONPointerEvaluateError);
     });
   });
 

@@ -17,7 +17,9 @@ export { default as compile } from './compile.js';
 export { default as escape } from './escape.js';
 export { default as unescape } from './unescape.js';
 
-export { default as evaluate } from './evaluate.js';
+export { default as evaluate } from './evaluate/index.js';
+export { default as EvaluationRealm } from './evaluate/realms/realm.js';
+export { default as JSONEvaluationRealm } from './evaluate/realms/json.js';
 
 export { default as JSONPointerError } from './errors/JSONPointerError.js';
 export { default as JSONPointerParseError } from './errors/JSONPointerParseError.js';
