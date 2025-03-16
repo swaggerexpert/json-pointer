@@ -1,3 +1,5 @@
+import type JSONEvaluationRealm from './evaluate/realms/json';
+
 export type JSONPointer = string;
 export type URIFragmentJSONPointer = string;
 export type StringifiedJSONPointer = string;
@@ -47,20 +49,31 @@ export function unescape(referenceToken: EscapedReferenceToken): UnescapedRefere
 /**
  * Compiling
  */
-export function compile(referenceTokens: UnescapedReferenceToken[]): JSONPointer;
+export function compile(referenceTokens: readonly UnescapedReferenceToken[]): JSONPointer;
 
 /**
  * Evaluating
  */
-export interface EvaluationOptions {
+export function evaluate<T = unknown>(value: unknown, jsonPointer: JSONPointer, options?: EvaluationOptions): T;
+
+export interface EvaluationOptions<R extends EvaluationRealm = JSONEvaluationRealm> {
   strictArrays?: boolean;
   strictObjects?: boolean;
+  realm?: R;
 }
 
-export type JSONArray = any[];
-export type JSONObject = Record<string, any>;
+export type JSONArray = ReadonlyArray<any>;
+export type JSONObject = Readonly<Record<string, any>>;
 
-export function evaluate(value: JSONArray | JSONObject, jsonPointer: JSONPointer, options?: EvaluationOptions): unknown;
+export declare abstract class EvaluationRealm {
+  public abstract readonly name: string;
+
+  public abstract isArray(node: unknown): boolean;
+  public abstract isObject(node: unknown): boolean;
+  public abstract sizeOf(node: unknown): number;
+  public abstract has(node: unknown, referenceToken: string): boolean;
+  public abstract evaluate<T = unknown>(node: unknown, referenceToken: string): T;
+}
 
 /**
  * Representing

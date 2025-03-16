@@ -13,6 +13,11 @@
       "import": "./es/index.mjs",
       "require": "./cjs/index.cjs"
     },
+    "./evaluate/realms/*": {
+      "types": "./types/evaluate/realms/*.d.ts",
+      "import": "./es/evaluate/realms/*.mjs",
+      "require": "./cjs/evaluate/realms/*.cjs"
+    },
     "./package.json": "./package.json"
   },
   "watch": {
