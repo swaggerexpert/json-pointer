@@ -36,7 +36,7 @@ const evaluate = (
               },
             );
           } else {
-            return realm.evaluate(current, realm.sizeOf(current));
+            return realm.evaluate(current, String(realm.sizeOf(current)));
           }
         }
 
