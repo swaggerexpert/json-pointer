@@ -2,7 +2,6 @@ import { assert } from 'chai';
 
 import {
   evaluate,
-  JSONEvaluationRealm,
   JSONPointerIndexError,
   JSONPointerTypeError,
   JSONPointerKeyError,
@@ -11,6 +10,7 @@ import {
   JSONString,
   URIFragmentIdentifier,
 } from '../src/index.js';
+import JSONEvaluationRealm from '../src/evaluate/realms/json.js';
 
 describe('evaluate', function () {
   const data = {

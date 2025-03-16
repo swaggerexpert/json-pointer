@@ -309,6 +309,74 @@ evaluate(value, '/bar/baz', { strictObjects: false }); // => throw JSONPointerTy
 
 ##### Evaluation Realms
 
+An **evaluation realm** defines the rules for interpreting and navigating data structures in JSON Pointer evaluation.
+While JSON Pointer traditionally operates on JSON objects and arrays, evaluation realms allow the evaluation to work
+polymorphically with different data structures, such as [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map),
+[Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set), [Immutable.js](https://immutable-js.com/),
+or even custom representations like [ApiDOM](https://github.com/swagger-api/apidom).
+Realm can be specified via the `realm` option in the `evalute()` function.
+
+###### JSON Evaluation Realm
+
+By default, the evaluation operates under the **JSON realm**, which assumes that:
+
+- **Arrays** are indexed numerically.
+- **Objects** (plain JavaScript objects) are accessed by string keys.
+
+The default realm is represented by the `JSONEvaluationRealm` class.
+
+```js
+import { evaluate } from '@swaggerexpert/json-pointer';
+
+evaluate({ a: 'b' }, '/a'); // => 'b'
+```
+
+is equivalent to:
+
+```js
+import { evaluate } from '@swaggerexpert/json-pointer';
+import JSONEvaluationRealm from '@swaggerexpert/json-pointer/evaluate/realms/json';
+
+evaluate({ a: 'b' }, '/a', { realm: new JSONEvaluationRealm() }); // => 'b'
+```
+
+###### Custom Evaluation Realms
+
+The evaluation is designed to support **custom evaluation realms**,
+enabling JSON Pointer evaluation for **non-standard data structures**.
+
+A valid custom evaluation realm must match the structure of the `EvaluationRealm` interface.
+
+```ts
+interface EvaluationRealm {
+  readonly name: string;
+
+  isArray(node: unknown): boolean;
+  isObject(node: unknown): boolean;
+  sizeOf(node: unknown): number;
+  has(node: unknown, referenceToken: string): boolean;
+  evaluate(node: unknown, referenceToken: string): unknown;
+}
+```
+
+One way to create a custom realm is to extend the `EvaluationRealm` class and implement the required methods.
+
+```js
+import { evaluate, EvaluationRealm } from '@swaggerexpert/json-pointer';
+
+class CustomEvaluationRealms extends EvaluationRealm {
+  name = 'cusotm';
+
+  isArray(node) { ... }
+  isObject(node) { ... }
+  sizeOf(node) { ... }
+  has(node, referenceToken) { ... }
+  evaluate(node, referenceToken) { ... }
+}
+
+evaluate({ a: 'b' }, '/a', { realm: new CustomEvaluationRealms() }); // => 'b'
+```
+
 #### Compilation
 
 Compilation is the process of transforming a list of reference tokens into a JSON Pointer.
