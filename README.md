@@ -340,6 +340,24 @@ import JSONEvaluationRealm from '@swaggerexpert/json-pointer/evaluate/realms/jso
 evaluate({ a: 'b' }, '/a', { realm: new JSONEvaluationRealm() }); // => 'b'
 ```
 
+###### Map/Set Evaluation Realm
+
+The Map/Set realm extends JSON Pointer evaluation to support [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) and [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) instances,
+allowing structured traversal and access beyond traditional JavaScript objects and arrays.
+Map/Set realm is represented by the `MapSetEvaluationRealm` class.
+
+
+```js
+import { evaluate } from '@swaggerexpert/json-pointer';
+import MapSetEvaluationRealm from '@swaggerexpert/json-pointer/evaluate/realms/map-set';
+
+const map = new Map([
+  ['a', new Set(['b', 'c'])]
+]);
+
+evaluate(map, '/a/1', { realm: new MapSetEvaluationRealm() }); // => 'c'
+```
+
 ###### Custom Evaluation Realms
 
 The evaluation is designed to support **custom evaluation realms**,
