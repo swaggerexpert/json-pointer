@@ -48,7 +48,7 @@ describe('evaluate', function () {
     });
   });
 
-  context('RFC 6901 JSON String tests', function () {
+  context('RFC 6901 URI Fragment Identifier tests', function () {
     const fragmentRepEntries = [
       ['#', data],
       ['#/foo', ['bar', 'baz']],

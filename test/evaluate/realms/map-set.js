@@ -25,7 +25,7 @@ describe('evaluate', function () {
     ['m~n', 8],
   ]);
 
-  context('RCC 6901 JSON String tests', function () {
+  context('RFC 6901 JSON String tests', function () {
     const jsonStringRepEntries = [
       ['', data],
       ['/foo', new Set(['bar', 'baz'])],
@@ -48,7 +48,7 @@ describe('evaluate', function () {
     });
   });
 
-  context('RCC 6901 JSON String tests', function () {
+  context('RFC 6901 URI Fragment Identifier tests', function () {
     const fragmentRepEntries = [
       ['#', data],
       ['#/foo', new Set(['bar', 'baz'])],
