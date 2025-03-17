@@ -76,7 +76,7 @@ describe('evaluate', function () {
       assert.deepEqual(evaluate(data, '', { realm }), data);
     });
 
-    specify('should return array ["bar", "baz"] for "/foo"', function () {
+    specify('should return Set(["bar", "baz"]) for "/foo"', function () {
       assert.deepEqual(evaluate(data, '/foo', { realm }), new Set(['bar', 'baz']));
     });
 
