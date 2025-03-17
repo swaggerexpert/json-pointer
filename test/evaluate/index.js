@@ -7,10 +7,9 @@ import {
   JSONPointerKeyError,
   JSONPointerEvaluateError,
   referenceTokenListEvaluator,
-  JSONString,
   URIFragmentIdentifier,
-} from '../src/index.js';
-import JSONEvaluationRealm from '../src/evaluate/realms/json.js';
+} from '../../src/index.js';
+import JSONEvaluationRealm from '../../src/evaluate/realms/json.js';
 
 describe('evaluate', function () {
   const data = {
@@ -26,31 +25,31 @@ describe('evaluate', function () {
     'm~n': 8,
   };
 
-  context('RCC 6901 JSON String tests', function () {
+  context('RFC 6901 JSON String tests', function () {
     const jsonStringRepEntries = [
-      ['""', data],
-      ['"/foo"', ['bar', 'baz']],
-      ['"/foo/0"', 'bar'],
-      ['"/"', 0],
-      ['"/a~1b"', 1],
-      ['"/c%d"', 2],
-      ['"/e^f"', 3],
-      ['"/g|h"', 4],
-      ['"/i\\\\j"', 5],
-      ['"/k\\"l"', 6],
-      ['"/ "', 7],
-      ['"/m~0n"', 8],
+      ['', data],
+      ['/foo', ['bar', 'baz']],
+      ['/foo/0', 'bar'],
+      ['/', 0],
+      ['/a~1b', 1],
+      ['/c%d', 2],
+      ['/e^f', 3],
+      ['/g|h', 4],
+      ['/i\\j', 5],
+      ['/k"l', 6],
+      ['/ ', 7],
+      ['/m~0n', 8],
     ];
 
     jsonStringRepEntries.forEach(([jsonString, expected]) => {
       specify('should correctly evaluate JSON Pointer from JSON String', function () {
-        assert.deepEqual(evaluate(data, JSONString.from(jsonString)), expected);
+        assert.deepEqual(evaluate(data, jsonString), expected);
       });
     });
   });
 
-  context('RCC 6901 JSON String tests', function () {
-    const jsonStringRepEntries = [
+  context('RFC 6901 JSON String tests', function () {
+    const fragmentRepEntries = [
       ['#', data],
       ['#/foo', ['bar', 'baz']],
       ['#/foo/0', 'bar'],
@@ -65,8 +64,8 @@ describe('evaluate', function () {
       ['#/m~0n', 8],
     ];
 
-    jsonStringRepEntries.forEach(([fragment, expected]) => {
-      specify('should correctly evaluate JSON Pointer from JSON String', function () {
+    fragmentRepEntries.forEach(([fragment, expected]) => {
+      specify('should correctly evaluate JSON Pointer from URI Fragment Identifier', function () {
         assert.deepEqual(evaluate(data, URIFragmentIdentifier.from(fragment)), expected);
       });
     });
