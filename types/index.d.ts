@@ -55,6 +55,7 @@ export function compile(referenceTokens: readonly UnescapedReferenceToken[]): JS
  * Evaluating
  */
 export function evaluate<T = unknown>(value: unknown, jsonPointer: JSONPointer, options?: EvaluationOptions): T;
+export function composeRealms(...realms: EvaluationRealm[]): EvaluationRealm;
 
 export interface EvaluationOptions<R extends EvaluationRealm = JSONEvaluationRealm> {
   strictArrays?: boolean;

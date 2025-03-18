@@ -1,4 +1,4 @@
-import JSONPointerError from '../../errors/JSONPointerError.js';
+import JSONPointerError from '../errors/JSONPointerError.js';
 
 class EvaluationRealm {
   name = '';

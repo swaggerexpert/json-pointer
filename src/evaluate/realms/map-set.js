@@ -1,4 +1,4 @@
-import EvaluationRealm from './index.js';
+import EvaluationRealm from '../EvaluationRealm.js';
 
 class MapSetEvaluationRealm extends EvaluationRealm {
   name = 'map-set';

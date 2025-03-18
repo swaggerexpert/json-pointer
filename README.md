@@ -395,6 +395,38 @@ class CustomEvaluationRealms extends EvaluationRealm {
 evaluate({ a: 'b' }, '/a', { realm: new CustomEvaluationRealms() }); // => 'b'
 ```
 
+###### Composing Evaluation Realms
+
+Evaluation realms can be composed to create complex evaluation scenarios,
+allowing JSON Pointer evaluation to work across multiple data structures in a seamless manner.
+By combining different realms, composite evaluation ensures that a JSON Pointer query can
+resolve correctly whether the data structure is an object, array, Map, Set, or any custom type.
+
+When composing multiple evaluation realms, the **order matters**. The composition is performed from left to right, meaning:
+
+- More specific realms should be placed first (leftmost position).
+- More generic realms should be placed later (rightmost position).
+
+This ensures that specialized data structures (e.g., Map, Set, Immutable.js) take precedence over generic JavaScript objects and arrays.
+
+```js
+import { composeRealms } from '@swaggerexpert/json-pointer';
+import JSONEvaluationRealm from '@swaggerexpert/json-pointer/realms/json';
+import MapSetEvaluationRealm from '@swaggerexpert/json-pointer/realms/map-set';
+
+const compositeRealm = composeRealms(new MapSetEvaluationRealm(), new JSONEvaluationRealm());
+
+const structure = [
+  {
+    a: new Map([
+      ['b', new Set(['c', 'd'])]
+    ]),
+  },
+];
+
+evaluate(structure, '/0/a/b/1', { realm : compositeRealm }); // => 'd'
+```
+
 #### Compilation
 
 Compilation is the process of transforming a list of reference tokens into a JSON Pointer.
