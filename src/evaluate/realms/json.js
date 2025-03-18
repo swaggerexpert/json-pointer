@@ -1,4 +1,4 @@
-import EvaluationRealm from './index.js';
+import EvaluationRealm from '../EvaluationRealm.js';
 
 class JSONEvaluationRealm extends EvaluationRealm {
   name = 'json';
