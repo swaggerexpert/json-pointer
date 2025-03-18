@@ -410,7 +410,7 @@ When composing multiple evaluation realms, the **order matters**. The compositio
 This ensures that specialized data structures (e.g., Map, Set, Immutable.js) take precedence over generic JavaScript objects and arrays.
 
 ```js
-import { composeRealms } from '@swaggerexpert/json-pointer';
+import { composeRealms, evaluate } from '@swaggerexpert/json-pointer';
 import JSONEvaluationRealm from '@swaggerexpert/json-pointer/realms/json';
 import MapSetEvaluationRealm from '@swaggerexpert/json-pointer/realms/map-set';
 
