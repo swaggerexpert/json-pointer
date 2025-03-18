@@ -264,7 +264,7 @@ evaluate(value, '/foo/a'); // => throws JSONPointerIndexError
 evaluate(value, '/bar'); // => throws JSONPointerKeyError
 ```
 
-**Strict Arrays**
+###### Strict Arrays
 
 [comment]: <> (SPDX-FileCopyrightText: Copyright &#40;c&#41; 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.)
 [comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
@@ -285,7 +285,7 @@ evaluate(value, '/foo/-', { strictArrays: false }); // => undefined
 evaluate(value, '/foo/a', { strictArrays: false }); // => undefined
 ```
 
-**Strict Objects**
+###### Strict Objects
 
 [comment]: <> (SPDX-FileCopyrightText: Copyright &#40;c&#41; 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.)
 [comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
@@ -440,7 +440,7 @@ compile(['~foo', 'bar']); // => '/~0foo/bar'
 
 #### Representation
 
-**JSON String**
+##### JSON String
 
 [comment]: <> (SPDX-FileCopyrightText: Copyright &#40;c&#41; 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.)
 [comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
@@ -457,7 +457,7 @@ JSONString.to('/foo"bar'); // => '"/foo\\"bar"'
 JSONString.from('"/foo\\"bar"'); // => '/foo"bar'
 ```
 
-**URI Fragment Identifier**
+##### URI Fragment Identifier
 
 [comment]: <> (SPDX-FileCopyrightText: Copyright &#40;c&#41; 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.)
 [comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
