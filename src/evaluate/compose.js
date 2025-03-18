@@ -1,4 +1,5 @@
 import EvaluationRealm from './EvaluationRealm.js';
+import JSONPointerEvaluateError from '../errors/JSONPointerEvaluateError.js';
 
 class CompositeEvaluationRealm extends EvaluationRealm {
   name = 'composite';
@@ -11,23 +12,23 @@ class CompositeEvaluationRealm extends EvaluationRealm {
   }
 
   isArray(node) {
-    return this.#findRealm(node)?.isArray(node) ?? false;
+    return this.#findRealm(node).isArray(node);
   }
 
   isObject(node) {
-    return this.#findRealm(node)?.isObject(node) ?? false;
+    return this.#findRealm(node).isObject(node);
   }
 
   sizeOf(node) {
-    return this.#findRealm(node)?.sizeOf(node) ?? 0;
+    return this.#findRealm(node).sizeOf(node);
   }
 
   has(node, referenceToken) {
-    return this.#findRealm(node)?.has(node, referenceToken) ?? false;
+    return this.#findRealm(node).has(node, referenceToken);
   }
 
   evaluate(node, referenceToken) {
-    return this.#findRealm(node)?.evaluate(node, referenceToken);
+    return this.#findRealm(node).evaluate(node, referenceToken);
   }
 
   #findRealm(node) {
@@ -36,7 +37,9 @@ class CompositeEvaluationRealm extends EvaluationRealm {
         return realm;
       }
     }
-    return undefined;
+    throw new JSONPointerEvaluateError('No suitable evaluation realm found for value', {
+      currentValue: node,
+    });
   }
 }
 

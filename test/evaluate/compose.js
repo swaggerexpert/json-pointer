@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import { evaluate, composeRealms, JSONPointerTypeError } from '../../src/index.js';
+import { evaluate, composeRealms, JSONPointerEvaluateError } from '../../src/index.js';
 import JSONEvaluationRealm from '../../src/evaluate/realms/json.js';
 import MapSetEvaluationRealm from '../../src/evaluate/realms/map-set.js';
 
@@ -29,8 +29,25 @@ describe('evaluate', function () {
 
       assert.throws(
         () => evaluate(structure, '/0/a/b/1', { realm: compositeRealm }),
-        JSONPointerTypeError,
+        JSONPointerEvaluateError,
       );
+    });
+
+    specify('should throw on invalid realm', function () {
+      const compositeRealm = composeRealms({});
+      const structure = [
+        {
+          a: new Map([['b', new Set(['c', 'd'])]]),
+        },
+      ];
+
+      try {
+        evaluate(structure, '/0/a/b/1', { realm: compositeRealm });
+        assert.fail('Expected an error to be thrown');
+      } catch (error) {
+        assert.instanceOf(error, JSONPointerEvaluateError);
+        assert.instanceOf(error.cause, TypeError);
+      }
     });
   });
 });
