@@ -35,12 +35,12 @@
       - [Strict Arrays](#strict-arrays)
       - [Strict Objects](#strict-objects)
       - [Evaluation Realms](#evaluation-realms)
-        - [JSON Evaluation Realm](#json-evaluation-realm)
-        - [Map/Set Evaluation Realm](#mapset-evaluation-realm)
-        - [Minim Evaluation Realm](#minim-evaluation-realm)
-        - [ApiDOM Evaluation Realm](#apidom-evaluation-realm)
-        - [Custom Evaluation Realms](#custom-evaluation-realms)
-        - [Composing Evaluation Realms](#composing-evaluation-realms)
+        - [JSON](#json-evaluation-realm)
+        - [Map/Set](#mapset-evaluation-realm)
+        - [Minim](#minim-evaluation-realm)
+        - [ApiDOM](#apidom-evaluation-realm)
+        - [Custom](#custom-evaluation-realms)
+        - [Composing Realms](#composing-evaluation-realms)
     - [Compilation](#compilation)
     - [Representation](#representation)
       - [JSON String](#json-string)
@@ -377,6 +377,11 @@ specifically ObjectElement, ArrayElement, and other element types from the [mini
 Minim is widely used in API description languages (e.g., OpenAPI, API Blueprint, AsyncAPI and other API Description processing tools)
 to represent structured API data. The Minim Evaluation Realm enables seamless JSON Pointer traversal for these structures.
 
+Before using the Minim Evaluation Realm, you need to install the `minim` package:
+
+```sh
+ $ npm install --save minim
+```
 
 ```js
 import { ObjectElement } from 'minim';
@@ -395,6 +400,12 @@ evaluate(objectElement, '/a/1', { realm: new MinimEvaluationRealm() }); // => St
 The [ApiDOM](https://github.com/swagger-api/apidom) Evaluation Realm is an integration layer that enables
 evaluation of JSON Pointer expressions on ApiDOM structures. It provides compatibility with ApiDOM [core](https://github.com/swagger-api/apidom/tree/main/packages/apidom-core) and namespace packages (`@swagger-api/apidom-ns-*`),
 allowing to traverse and query ApiDOM element instances.
+
+Before using the ApiDOM Evaluation Realm, you need to install the `@swagger-api/apidom-core` packages:
+
+```sh
+ $ npm install --save @swagger-api/apidom-core
+```
 
 ```js
 import { ObjectElement } from '@swagger-api/apidom-core';
