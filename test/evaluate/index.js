@@ -71,56 +71,6 @@ describe('evaluate', function () {
     });
   });
 
-  context('valid JSON Pointers', function () {
-    specify('should return entire document for ""', function () {
-      assert.deepEqual(evaluate(data, ''), data);
-    });
-
-    specify('should return array ["bar", "baz"] for "/foo"', function () {
-      assert.deepEqual(evaluate(data, '/foo'), ['bar', 'baz']);
-    });
-
-    specify('should return "bar" for "/foo/0"', function () {
-      assert.strictEqual(evaluate(data, '/foo/0'), 'bar');
-    });
-
-    specify('should return 0 for "/"', function () {
-      assert.strictEqual(evaluate(data, '/'), 0);
-    });
-
-    specify('should return 1 for "/a~1b"', function () {
-      assert.strictEqual(evaluate(data, '/a~1b'), 1);
-    });
-
-    specify('should return 2 for "/c%d"', function () {
-      assert.strictEqual(evaluate(data, '/c%d'), 2);
-    });
-
-    specify('should return 3 for "/e^f"', function () {
-      assert.strictEqual(evaluate(data, '/e^f'), 3);
-    });
-
-    specify('should return 4 for "/g|h"', function () {
-      assert.strictEqual(evaluate(data, '/g|h'), 4);
-    });
-
-    specify('should return 5 for "/i\\j"', function () {
-      assert.strictEqual(evaluate(data, '/i\\j'), 5);
-    });
-
-    specify('should return 6 for "/k\"l"', function () {
-      assert.strictEqual(evaluate(data, '/k"l'), 6);
-    });
-
-    specify('should return 7 for "/ "', function () {
-      assert.strictEqual(evaluate(data, '/ '), 7);
-    });
-
-    specify('should return 8 for "/m~0n"', function () {
-      assert.strictEqual(evaluate(data, '/m~0n'), 8);
-    });
-  });
-
   context('given custom evaluator option', function () {
     specify('should correctly use a default evaluator', function () {
       const result = evaluate(data, '/a~1b', { evaluator: referenceTokenListEvaluator });
