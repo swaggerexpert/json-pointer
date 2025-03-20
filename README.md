@@ -376,7 +376,34 @@ const objectElement = new ObjectElement({
   a: ['b', 'c']
 });
 
-evaluate(objectElement, '/a/1', { realm: new MinimEvaluationRealm() }); // => 'c'
+evaluate(objectElement, '/a/1', { realm: new MinimEvaluationRealm() }); // => StringElement('c')
+```
+
+###### ApiDOM Evaluation Realm
+
+The [ApiDOM](https://github.com/swagger-api/apidom) Evaluation Realm is an integration layer that enables
+evaluation of JSON Pointer expressions on ApiDOM structures. It provides compatibility with ApiDOM [core](https://github.com/swagger-api/apidom/tree/main/packages/apidom-core) and namespace packages (`@swagger-api/apidom-ns-*`),
+allowing to traverse and query ApiDOM element instances.
+
+```js
+import { ObjectElement } from '@swagger-api/apidom-core';
+import { InfoElement } from '@swagger-api/apidom-ns-openapi-3-0'
+import { evaluate } from '@swaggerexpert/json-pointer';
+import ApiDOMEvaluationRealm from '@swaggerexpert/json-pointer/evaluate/realms/apidom';
+
+const objectElement = new ObjectElement({
+  a: ['b', 'c']
+});
+const infoElement = InfoElement.refract({
+  contact: {
+    name: 'SwaggerExpert',
+    email: 'contact@swaggerexpert.com'
+  }
+})
+
+
+evaluate(objectElement, '/a/1', { realm: new ApiDOMEvaluationRealm() }); // => StringElement('c')
+evaluate(infoElement, '/contact/name', { realm: new ApiDOMEvaluationRealm() }); // => StringElement('SwaggerExpert')
 ```
 
 ###### Custom Evaluation Realms
