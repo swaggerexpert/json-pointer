@@ -358,6 +358,27 @@ const map = new Map([
 evaluate(map, '/a/1', { realm: new MapSetEvaluationRealm() }); // => 'c'
 ```
 
+###### Minim Evaluation Realm
+
+The Minim Evaluation Realm extends JSON Pointer evaluation to support Minim data structures,
+specifically ObjectElement, ArrayElement, and other element types from the [minim](https://github.com/refractproject/minim).
+
+Minim is widely used in API description languages (e.g., OpenAPI, API Blueprint, AsyncAPI and other API Description processing tools)
+to represent structured API data. The Minim Evaluation Realm enables seamless JSON Pointer traversal for these structures.
+
+
+```js
+import { ObjectElement } from 'minim';
+import { evaluate } from '@swaggerexpert/json-pointer';
+import MinimEvaluationRealm from '@swaggerexpert/json-pointer/evaluate/realms/minim';
+
+const objectElement = new ObjectElement({
+  a: ['b', 'c']
+});
+
+evaluate(objectElement, '/a/1', { realm: new MinimEvaluationRealm() }); // => 'c'
+```
+
 ###### Custom Evaluation Realms
 
 The evaluation is designed to support **custom evaluation realms**,

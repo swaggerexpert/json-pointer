@@ -66,7 +66,7 @@ const evaluate = (
 
       if (realm.isObject(current)) {
         if (!realm.has(current, referenceToken) && strictObjects) {
-          throw new JSONPointerKeyError(undefined, {
+          throw new JSONPointerKeyError(`Invalid object key: '${referenceToken}' not found`, {
             jsonPointer,
             referenceTokens,
             referenceToken,
