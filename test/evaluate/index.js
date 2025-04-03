@@ -6,7 +6,6 @@ import {
   JSONPointerTypeError,
   JSONPointerKeyError,
   JSONPointerEvaluateError,
-  referenceTokenListEvaluator,
   URIFragmentIdentifier,
 } from '../../src/index.js';
 import JSONEvaluationRealm from '../../src/evaluate/realms/json.js';
@@ -68,26 +67,6 @@ describe('evaluate', function () {
       specify('should correctly evaluate JSON Pointer from URI Fragment Identifier', function () {
         assert.deepEqual(evaluate(data, URIFragmentIdentifier.from(fragment)), expected);
       });
-    });
-  });
-
-  context('given custom evaluator option', function () {
-    specify('should correctly use a default evaluator', function () {
-      const result = evaluate(data, '/a~1b', { evaluator: referenceTokenListEvaluator });
-
-      assert.deepEqual(result, 1); // Evaluator should return unescaped reference token list
-    });
-
-    specify('should use a custom evaluator', function () {
-      const evaluator = (ast) => {
-        const parts = [];
-
-        ast.translate(parts);
-
-        return parts.filter(([type]) => type === 'reference-token').map(([, value]) => value);
-      };
-
-      assert.throws(() => evaluate(data, '/a~1b', { evaluator }), JSONPointerKeyError);
     });
   });
 

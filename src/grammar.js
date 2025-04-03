@@ -5,14 +5,14 @@
 export default function grammar(){
   // ```
   // SUMMARY
-  //      rules = 7
+  //      rules = 8
   //       udts = 0
-  //    opcodes = 27
+  //    opcodes = 28
   //        ---   ABNF original opcodes
   //        ALT = 5
   //        CAT = 3
   //        REP = 3
-  //        RNM = 5
+  //        RNM = 6
   //        TLS = 5
   //        TBS = 1
   //        TRG = 5
@@ -34,6 +34,7 @@ export default function grammar(){
   this.rules[4] = { name: 'array-location', lower: 'array-location', index: 4, isBkr: false };
   this.rules[5] = { name: 'array-index', lower: 'array-index', index: 5, isBkr: false };
   this.rules[6] = { name: 'array-dash', lower: 'array-dash', index: 6, isBkr: false };
+  this.rules[7] = { name: 'slash', lower: 'slash', index: 7, isBkr: false };
 
   /* UDTS */
   this.udts = [];
@@ -43,7 +44,7 @@ export default function grammar(){
   this.rules[0].opcodes = [];
   this.rules[0].opcodes[0] = { type: 3, min: 0, max: Infinity };// REP
   this.rules[0].opcodes[1] = { type: 2, children: [2,3] };// CAT
-  this.rules[0].opcodes[2] = { type: 7, string: [47] };// TLS
+  this.rules[0].opcodes[2] = { type: 4, index: 7 };// RNM(slash)
   this.rules[0].opcodes[3] = { type: 4, index: 1 };// RNM(reference-token)
 
   /* reference-token */
@@ -87,12 +88,16 @@ export default function grammar(){
   this.rules[6].opcodes = [];
   this.rules[6].opcodes[0] = { type: 7, string: [45] };// TLS
 
+  /* slash */
+  this.rules[7].opcodes = [];
+  this.rules[7].opcodes[0] = { type: 7, string: [47] };// TLS
+
   // The `toString()` function will display the original grammar file(s) that produced these opcodes.
   this.toString = function toString(){
     let str = "";
     str += "; JavaScript Object Notation (JSON) Pointer ABNF syntax\n";
     str += "; https://datatracker.ietf.org/doc/html/rfc6901\n";
-    str += "json-pointer    = *( \"/\" reference-token )\n";
+    str += "json-pointer    = *( slash reference-token ) ; MODIFICATION: surrogate text rule used\n";
     str += "reference-token = *( unescaped / escaped )\n";
     str += "unescaped       = %x00-2E / %x30-7D / %x7F-10FFFF\n";
     str += "                ; %x2F ('/') and %x7E ('~') are excluded from 'unescaped'\n";
@@ -105,7 +110,8 @@ export default function grammar(){
     str += "                ; \"0\", or digits without a leading \"0\"\n";
     str += "array-dash      = \"-\"\n";
     str += "\n";
-    str += "\n";
+    str += "; Surrogate named rules\n";
+    str += "slash           = \"/\"\n";
     return str;
   }
 }

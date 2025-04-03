@@ -18,18 +18,68 @@ export type ArrayLocation = ArrayIndex | ArrayDash;
 /**
  * Parsing
  */
-export function parse(jsonPointer: JSONPointer): ParseResult;
+export function parse(jsonPointer: JSONPointer, options?: ParseOptions): ParseResult;
 
-interface ParseResult {
+export interface ParseOptions {
+  readonly stats?: boolean;
+  readonly trace?: boolean;
+  readonly translator?: Translator | null;
+}
+
+export interface Translator<TTree = ASTTranslator> {
+  getTree(): TTree;
+}
+export declare class CSTTranslator implements Translator<CSTTree> {
+  getTree(): CSTTree;
+}
+export declare class ASTTranslator implements Translator<ASTTree> {
+  getTree(): ASTTree;
+}
+export declare class XMLTranslator implements Translator<XMLTree> {
+  getTree(): XMLTree;
+}
+
+export interface CSTNode {
+  readonly type: 'json-pointer' | 'reference-token' | 'slash',
+  readonly text: string,
+  readonly start: number,
+  readonly length: number,
+  readonly children: CSTNode[],
+}
+
+export interface CSTTree {
+  readonly root: CSTNode;
+}
+
+export type ASTTree = UnescapedReferenceToken[]
+
+export type XMLTree = string;
+
+export interface ParseResult<TTree = ASTTree> {
   readonly result: {
     readonly success: boolean;
+    readonly state: number;
+    readonly stateName: string;
+    readonly length: number;
+    readonly matched: number;
+    readonly maxMatched: number;
+    readonly maxTreeDepth: number
+    readonly nodeHits: number;
   };
-  readonly ast: {
-    readonly translate: (parts: any[]) => Array<[string, string]>;
-    readonly toXml: () => string;
-  };
-  computed: null | UnescapedReferenceToken[]
+  readonly tree?: TTree;
+  readonly stats?: Stats;
+  readonly trace?: Trace;
 }
+
+export interface Stats {
+  displayStats(): string;
+  displayHits(): string;
+}
+
+export interface Trace {
+  displayTrace(): string;
+}
+
 
 /**
  * Testing
@@ -62,9 +112,6 @@ export interface EvaluationOptions<R extends EvaluationRealm = JSONEvaluationRea
   strictObjects?: boolean;
   realm?: R;
 }
-
-export type JSONArray = ReadonlyArray<any>;
-export type JSONObject = Readonly<Record<string, any>>;
 
 export declare abstract class EvaluationRealm {
   public abstract readonly name: string;
@@ -133,10 +180,6 @@ export declare class JSONPointerError extends Error {
 export declare class JSONPointerParseError extends JSONPointerError { }
 export declare class JSONPointerCompileError extends JSONPointerError { }
 export declare class JSONPointerEvaluateError extends JSONPointerError { }
-export declare class JSONPointerTypeError extends JSONPointerEvaluateError {
-  constructor(referenceToken: ReferenceToken, options?: JSONPointerErrorOptions);
-}
-export declare class JSONPointerKeyError extends JSONPointerEvaluateError {
-  constructor(referenceToken: ReferenceToken, options?: JSONPointerErrorOptions);
-}
+export declare class JSONPointerTypeError extends JSONPointerEvaluateError { }
+export declare class JSONPointerKeyError extends JSONPointerEvaluateError { }
 export declare class JSONPointerIndexError extends JSONPointerEvaluateError { }

@@ -10,10 +10,9 @@ import JSONPointerKeyError from '../errors/JSONPointerKeyError.js';
 const evaluate = (
   value,
   jsonPointer,
-  { strictArrays = true, strictObjects = true, evaluator = null, realm = new JSONRealm() } = {},
+  { strictArrays = true, strictObjects = true, realm = new JSONRealm() } = {},
 ) => {
-  const parseOptions = typeof evaluator === 'function' ? { evaluator } : undefined;
-  const { result, computed: referenceTokens } = parse(jsonPointer, parseOptions);
+  const { result, tree: referenceTokens } = parse(jsonPointer);
 
   if (!result.success) {
     throw new JSONPointerEvaluateError(`Invalid JSON Pointer: ${jsonPointer}`, {

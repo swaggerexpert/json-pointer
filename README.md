@@ -29,6 +29,12 @@
   - [Installation](#installation)
   - [Usage](#usage)
     - [Parsing](#parsing)
+      - [Translators](#translators)
+        - [CST](#cst-translator)
+        - [AST](#ast-translator)
+        - [XML](#xml-translator)
+      - [Statistics](#statistics)
+      - [Tracing](#tracing)
     - [Validation](#validation)
     - [Escaping](#escaping)
     - [Evaluation](#evaluation)
@@ -81,95 +87,96 @@ const parseResult = parse('/foo/bar');
 
 ```
 {
-  result: {
-    success: true,
-    state: 101,
-    stateName: 'MATCH',
-    length: 8,
-    matched: 8,
-    maxMatched: 8,
-    maxTreeDepth: 8,
-    nodeHits: 49
-  },
-  ast: fnast {
-    callbacks: [
-      'json-pointer': [Function: jsonPointer],
-      'reference-token': [Function: referenceToken]
-    ],
-    init: [Function (anonymous)],
-    ruleDefined: [Function (anonymous)],
-    udtDefined: [Function (anonymous)],
-    down: [Function (anonymous)],
-    up: [Function (anonymous)],
-    translate: [Function (anonymous)],
-    setLength: [Function (anonymous)],
-    getLength: [Function (anonymous)],
-    toXml: [Function (anonymous)]
-  },
-  computed: [ 'foo', 'bar' ]
+  result: <ParseResult['result]>,
+  tree: <ParseResult['tree']>,
+  stats: <ParseResult['stats']>,
+  trace: <ParseResult['trace']>,
 }
 ```
 
-###### Evaluating AST as list of unescaped reference tokens
+[TypeScript typings](https://github.com/swaggerexpert/json-pointer/blob/main/types/index.d.ts) are available for all fields attached to parse result object returned by the `parse` function.
 
-One of the ways to interpret the parsed JSON Pointer is to evaluate it as a list of unescaped reference tokens.
+##### Translators
 
-```js
-import { parse } from '@swaggerexpert/json-parse';
+`@swaggerexpert/json-pointer` provides several translators to convert the parse result into different tree representations.
 
-const { computed } = parse('/foo/bar'); // computed = ['foo', 'bar']
-```
+###### CST translator
 
-###### Interpreting AST as list of entries
-
-```js
-import { parse } from '@swaggerexpert/json-parse';
-
-const parseResult = parse('/foo/bar');
-const parts = [];
-
-parseResult.ast.translate(parts);
-```
-
-After running the above code, **parts** variable has the following shape:
+[Concrete Syntax Tree](https://en.wikipedia.org/wiki/Parse_tree) (Parse tree) representation is available on parse result
+when instance of `CSTTranslator` is provided via a `translator` option to the `parse` function.
+CST is suitable to be consumed by other tools like IDEs, editors, etc...
 
 ```js
-[
-  ['json-pointer', '/foo/bar'],
-  ['reference-token', 'foo'],
-  ['reference-token', 'bar'],
-]
+import { parse, CSTTranslator } from '@swaggerexpert/json-pointer';
+
+const { tree: CST } = parse('/foo/bar', { translator: new CSTTranslator() });
 ```
 
-###### Interpreting AST as XML
+CST tree has a shape documented by [TypeScript typings (CSTTree)](https://github.com/swaggerexpert/json-pointer/blob/main/types/index.d.ts).
+
+###### AST translator
+
+**Default translator**. [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) representation is available on parse result
+by default or when instance of `ASTTranslator` is provided via a `translator` option to the `parse` function.
+AST is suitable to be consumed by implementations that need to analyze the structure of the JSON Pointer
+or for building a custom JSON Pointer evaluation engine.
+
+AST of the parsed JSON Pointer is a list of unescaped reference tokens.
 
 ```js
 import { parse } from '@swaggerexpert/json-pointer';
 
-const parseResult = parse('/foo/bar');
-const xml = parseResult.ast.toXml();
+const { tree: AST } = parse('/foo/bar'); // AST = ['foo', 'bar']
 ```
 
-After running the above code, **xml** variable has the following content:
+or
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<root nodes="3" characters="8">
-  <!-- input string -->
-  /foo/bar
-  <node name="json-pointer" index="0" length="8">
-    /foo/bar
-    <node name="reference-token" index="1" length="3">
-      foo
-    </node><!-- name="reference-token" -->
-    <node name="reference-token" index="5" length="3">
-      bar
-    </node><!-- name="reference-token" -->
-  </node><!-- name="json-pointer" -->
-</root>
+```js
+import { parse, ASTTranslator } from '@swaggerexpert/json-poiner';
+
+const { tree: AST } = parse('/foo/bar', { translator: new ASTTranslator() }); // AST = ['foo', 'bar']
 ```
 
-> NOTE: AST can also be traversed in classical way using [depth first traversal](https://www.tutorialspoint.com/data_structures_algorithms/depth_first_traversal.htm). For more information about this option please refer to [apg-js](https://github.com/ldthomas/apg-js) and [apg-js-examples](https://github.com/ldthomas/apg-js-examples).
+###### XML translator
+
+```js
+import { parse, XMLTranslator } from '@swaggerexpert/json-pointer';
+
+const { tree: XML } = parse('$.store.book[0].title', { translator: new XMLTranslator() });
+```
+
+##### Statistics
+
+`parse` function returns additional statistical information about the parsing process.
+Collection of the statistics can be enabled by setting `stats` option to `true`.
+
+```js
+import { parse } from '@swaggerexpert/json-pointer';
+
+const { stats } = parse('/foo/bar', { stats: true });
+
+stats.displayStats(); // returns operator stats
+stats.displayHits(); // returns rules grouped by hit count
+```
+
+##### Tracing
+
+`parse` function returns additional tracing information about the parsing process.
+Tracing can be enabled by setting `trace` option to `true`. Tracing is essential
+for debugging failed matches or analyzing rule execution flow.
+
+```js
+import { parse } from '@swaggerexpert/json-pointer';
+
+const { result, trace } = parse('1', { trace: true });
+
+result.success; // returns false
+trace.displayTrace(); // returns trace information
+```
+
+By combining information from `result` and `trace`, it is possible to analyze the parsing process in detail
+and generate a messages like this: `'Syntax error at position 0, expected "/"'`. Please see this
+[test file](https://github.com/swaggerexpert/json-pointer/blob/main/test/parse/trace.js) for more information how to achieve that.
 
 #### Validation
 
@@ -409,23 +416,14 @@ Before using the ApiDOM Evaluation Realm, you need to install the `@swagger-api/
 
 ```js
 import { ObjectElement } from '@swagger-api/apidom-core';
-import { InfoElement } from '@swagger-api/apidom-ns-openapi-3-0'
 import { evaluate } from '@swaggerexpert/json-pointer';
 import ApiDOMEvaluationRealm from '@swaggerexpert/json-pointer/evaluate/realms/apidom';
 
 const objectElement = new ObjectElement({
   a: ['b', 'c']
 });
-const infoElement = InfoElement.refract({
-  contact: {
-    name: 'SwaggerExpert',
-    email: 'contact@swaggerexpert.com'
-  }
-})
-
 
 evaluate(objectElement, '/a/1', { realm: new ApiDOMEvaluationRealm() }); // => StringElement('c')
-evaluate(infoElement, '/contact/name', { realm: new ApiDOMEvaluationRealm() }); // => StringElement('SwaggerExpert')
 ```
 
 ###### Custom Evaluation Realms
@@ -433,19 +431,7 @@ evaluate(infoElement, '/contact/name', { realm: new ApiDOMEvaluationRealm() }); 
 The evaluation is designed to support **custom evaluation realms**,
 enabling JSON Pointer evaluation for **non-standard data structures**.
 
-A valid custom evaluation realm must match the structure of the `EvaluationRealm` interface.
-
-```ts
-interface EvaluationRealm {
-  readonly name: string;
-
-  isArray(node: unknown): boolean;
-  isObject(node: unknown): boolean;
-  sizeOf(node: unknown): number;
-  has(node: unknown, referenceToken: string): boolean;
-  evaluate(node: unknown, referenceToken: string): unknown;
-}
-```
+A valid custom evaluation realm must match the structure of the [EvaluationRealm interface](https://github.com/swaggerexpert/json-pointer/blob/main/types/index.d.ts).
 
 One way to create a custom realm is to extend the `EvaluationRealm` class and implement the required methods.
 
@@ -594,7 +580,7 @@ JSON Pointer is defined by the following [ABNF](https://tools.ietf.org/html/rfc5
 ```abnf
 ; JavaScript Object Notation (JSON) Pointer ABNF syntax
 ; https://datatracker.ietf.org/doc/html/rfc6901
-json-pointer    = *( "/" reference-token )
+json-pointer    = *( slash reference-token ) ; MODIFICATION: surrogate text rule used
 reference-token = *( unescaped / escaped )
 unescaped       = %x00-2E / %x30-7D / %x7F-10FFFF
                 ; %x2F ('/') and %x7E ('~') are excluded from 'unescaped'
@@ -606,6 +592,9 @@ array-location  = array-index / array-dash
 array-index     = %x30 / ( %x31-39 *(%x30-39) )
                 ; "0", or digits without a leading "0"
 array-dash      = "-"
+
+; Surrogate named rules
+slash           = "/"
 ```
 
 ## License

@@ -4,7 +4,9 @@ export { JSONString, URIFragmentIdentifier };
 
 export { default as Grammar } from './grammar.js';
 export { default as parse } from './parse/index.js';
-export { default as referenceTokenListEvaluator } from './parse/evaluators/reference-token-list.js';
+export { default as CSTTranslator } from './parse/translators/CSTTranslator.js';
+export { default as ASTTranslator } from './parse/translators/ASTTranslator.js';
+export { default as XMLTranslator } from './parse/translators/XMLTranslator.js';
 
 export { default as testJSONPointer } from './test/json-pointer.js';
 export { default as testReferenceToken } from './test/reference-token.js';

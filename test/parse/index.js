@@ -1,88 +1,60 @@
 import { assert } from 'chai';
 
-import { parse } from '../src/index.js';
+import { parse } from '../../src/index.js';
 
 describe('parse', function () {
   context('given valid source string', function () {
     context('""', function () {
-      specify('should parse and translate', function () {
+      specify('should parse', function () {
         const parseResult = parse('');
 
-        const parts = [];
-        parseResult.ast.translate(parts);
-
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parts, [['json-pointer', '']]);
+        assert.deepEqual(parseResult.tree, []);
       });
     });
 
     context('/foo', function () {
-      specify('should parse and translate', function () {
+      specify('should parse', function () {
         const parseResult = parse('/foo');
 
-        const parts = [];
-        parseResult.ast.translate(parts);
-
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parts, [
-          ['json-pointer', '/foo'],
-          ['reference-token', 'foo'],
-        ]);
+        assert.deepEqual(parseResult.tree, ['foo']);
       });
     });
 
     context('/foo/bar/baz', function () {
-      specify('should parse and translate', function () {
+      specify('should parse', function () {
         const parseResult = parse('/foo/bar/baz');
 
-        const parts = [];
-        parseResult.ast.translate(parts);
-
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parts, [
-          ['json-pointer', '/foo/bar/baz'],
-          ['reference-token', 'foo'],
-          ['reference-token', 'bar'],
-          ['reference-token', 'baz'],
-        ]);
+        assert.deepEqual(parseResult.tree, ['foo', 'bar', 'baz']);
       });
     });
 
     context('/foo//bar', function () {
-      specify('should parse and translate correctly', function () {
+      specify('should parse', function () {
         const parseResult = parse('/foo//bar');
 
-        const parts = [];
-        parseResult.ast.translate(parts);
-
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parts, [
-          ['json-pointer', '/foo//bar'],
-          ['reference-token', 'foo'],
-          ['reference-token', ''],
-          ['reference-token', 'bar'],
-        ]);
+        assert.deepEqual(parseResult.tree, ['foo', '', 'bar']);
       });
     });
 
     context('/a~0b~1c', function () {
-      specify('should parse and translate correctly', function () {
+      specify('should parse', function () {
         const parseResult = parse('/a~0b~1c');
 
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parseResult.computed, ['a~b/c']);
+        assert.deepEqual(parseResult.tree, ['a~b/c']);
       });
     });
 
     context('empty string', function () {
-      specify('should parse and translate', function () {
+      specify('should parse', function () {
         const parseResult = parse('');
 
-        const parts = [];
-        parseResult.ast.translate(parts);
-
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parseResult.computed, []);
+        assert.deepEqual(parseResult.tree, []);
       });
     });
 
@@ -90,31 +62,17 @@ describe('parse', function () {
       specify('should parse correctly', function () {
         const parseResult = parse('//foo/bar');
 
-        const parts = [];
-        parseResult.ast.translate(parts);
-
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parts, [
-          ['json-pointer', '//foo/bar'],
-          ['reference-token', ''],
-          ['reference-token', 'foo'],
-          ['reference-token', 'bar'],
-        ]);
+        assert.deepEqual(parseResult.tree, ['', 'foo', 'bar']);
       });
     });
 
     context('/', function () {
-      specify('should parse and translate correctly', function () {
+      specify('should parse', function () {
         const parseResult = parse('/');
 
-        const parts = [];
-        parseResult.ast.translate(parts);
-
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parts, [
-          ['json-pointer', '/'],
-          ['reference-token', ''],
-        ]);
+        assert.deepEqual(parseResult.tree, ['']);
       });
     });
 
@@ -123,7 +81,7 @@ describe('parse', function () {
         const parseResult = parse('/foo~~~bar');
 
         assert.isFalse(parseResult.result.success);
-        assert.isNull(parseResult.computed);
+        assert.isUndefined(parseResult.tree);
       });
     });
 
@@ -131,15 +89,8 @@ describe('parse', function () {
       specify('should parse correctly', function () {
         const parseResult = parse('/𝛑/测试');
 
-        const parts = [];
-        parseResult.ast.translate(parts);
-
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parts, [
-          ['json-pointer', '/𝛑/测试'],
-          ['reference-token', '𝛑'],
-          ['reference-token', '测试'],
-        ]);
+        assert.deepEqual(parseResult.tree, ['𝛑', '测试']);
       });
     });
 
@@ -148,7 +99,7 @@ describe('parse', function () {
         const parseResult = parse('/foo/-/bar');
 
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parseResult.computed, ['foo', '-', 'bar']);
+        assert.deepEqual(parseResult.tree, ['foo', '-', 'bar']);
       });
     });
 
@@ -157,7 +108,7 @@ describe('parse', function () {
         const parseResult = parse('/foo/bar/');
 
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parseResult.computed, ['foo', 'bar', '']);
+        assert.deepEqual(parseResult.tree, ['foo', 'bar', '']);
       });
     });
 
@@ -166,7 +117,7 @@ describe('parse', function () {
         const parseResult = parse('/foo?bar');
 
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parseResult.computed, ['foo?bar']);
+        assert.deepEqual(parseResult.tree, ['foo?bar']);
       });
     });
 
@@ -175,7 +126,7 @@ describe('parse', function () {
         const parseResult = parse('/foo#bar');
 
         assert.isTrue(parseResult.result.success);
-        assert.deepEqual(parseResult.computed, ['foo#bar']);
+        assert.deepEqual(parseResult.tree, ['foo#bar']);
       });
     });
   });
@@ -186,7 +137,7 @@ describe('parse', function () {
         const parseResult = parse('1');
 
         assert.isFalse(parseResult.result.success);
-        assert.isNull(parseResult.computed);
+        assert.isUndefined(parseResult.tree);
       });
     });
 
@@ -195,7 +146,7 @@ describe('parse', function () {
         const parseResult = parse('nonsensical string');
 
         assert.isFalse(parseResult.result.success);
-        assert.isNull(parseResult.computed);
+        assert.isUndefined(parseResult.tree);
       });
     });
 
@@ -204,7 +155,7 @@ describe('parse', function () {
         const parseResult = parse('/foo~2bar');
 
         assert.isFalse(parseResult.result.success);
-        assert.isNull(parseResult.computed);
+        assert.isUndefined(parseResult.tree);
       });
     });
 
@@ -213,7 +164,7 @@ describe('parse', function () {
         const parseResult = parse('/foo~xbar');
 
         assert.isFalse(parseResult.result.success);
-        assert.isNull(parseResult.computed);
+        assert.isUndefined(parseResult.tree);
       });
     });
 
@@ -222,7 +173,7 @@ describe('parse', function () {
         const parseResult = parse('foo/bar');
 
         assert.isFalse(parseResult.result.success);
-        assert.isNull(parseResult.computed);
+        assert.isUndefined(parseResult.tree);
       });
     });
   });
