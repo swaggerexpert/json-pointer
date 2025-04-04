@@ -45,7 +45,7 @@
         - [Map/Set](#mapset-evaluation-realm)
         - [Minim](#minim-evaluation-realm)
         - [ApiDOM](#apidom-evaluation-realm)
-        - [Immutable.js]('#immutablejs-evaluation-realm)
+        - [Immutable.js](#immutablejs-evaluation-realm)
         - [Custom](#custom-evaluation-realms)
         - [Composing Realms](#composing-evaluation-realms)
     - [Compilation](#compilation)
