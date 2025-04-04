@@ -45,6 +45,7 @@
         - [Map/Set](#mapset-evaluation-realm)
         - [Minim](#minim-evaluation-realm)
         - [ApiDOM](#apidom-evaluation-realm)
+        - [Immutable.js]('#immutablejs-evaluation-realm)
         - [Custom](#custom-evaluation-realms)
         - [Composing Realms](#composing-evaluation-realms)
     - [Compilation](#compilation)
@@ -425,6 +426,30 @@ const objectElement = new ObjectElement({
 
 evaluate(objectElement, '/a/1', { realm: new ApiDOMEvaluationRealm() }); // => StringElement('c')
 ```
+
+###### Immutable.js Evaluation Realm
+
+The [Immutable.js](https://immutable-js.com/) Evaluation Realm is an integration layer that enables
+evaluation of JSON Pointer expressions on Immutable.js structures.
+
+Before using the Immutable.js Evaluation Realm, you need to install the `immutable` packages:
+
+```sh
+ $ npm install --save immutable
+```
+
+```js
+import { fromJS } from 'immutable';
+import { evaluate } from '@swaggerexpert/json-pointer';
+import ImmutableEvaluationRealm from '@swaggerexpert/json-pointer/evaluate/realms/immutable';
+
+const map = fromJS({
+  a: ['b', 'c']
+});
+
+evaluate(map, '/a/1', { realm: new ImmutableEvaluationRealm() }); // => 'c'
+```
+
 
 ###### Custom Evaluation Realms
 
