@@ -30,10 +30,13 @@ class ApiDOMEvaluationRealm extends EvaluationRealm {
       const uniqueKeys = new Set(keys);
 
       if (keys.length !== uniqueKeys.size) {
-        throw new JSONPointerKeyError(`Object keys must be unique for '${referenceToken}'`, {
-          currentValue: node,
-          referenceToken,
-        });
+        throw new JSONPointerKeyError(
+          `Object key "${referenceToken}" is not unique — JSON Pointer requires unique member names`,
+          {
+            currentValue: node,
+            referenceToken,
+          },
+        );
       }
 
       return node.hasKey(referenceToken);

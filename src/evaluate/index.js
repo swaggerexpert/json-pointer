@@ -26,12 +26,14 @@ const evaluate = (
         if (testArrayDash(referenceToken)) {
           if (strictArrays) {
             throw new JSONPointerIndexError(
-              'Invalid array index: "-" always refers to a nonexistent element during evaluation',
+              `Invalid array index "-" at position ${referenceTokenPosition} in ${jsonPointer}. The "-" token always refers to a nonexistent element during evaluation`,
               {
                 jsonPointer,
                 referenceTokens,
                 referenceToken,
                 referenceTokenPosition,
+                currentValue: current,
+                realm: realm.name,
               },
             );
           } else {
@@ -41,48 +43,64 @@ const evaluate = (
 
         if (!testArrayIndex(referenceToken) && strictArrays) {
           throw new JSONPointerIndexError(
-            `Invalid array index: '${referenceToken}' (MUST be "0", or digits without a leading "0")`,
+            `Invalid array index "${referenceToken}" at position ${referenceTokenPosition} in ${jsonPointer}: index MUST be "0", or digits without a leading "0"`,
             {
               jsonPointer,
               referenceTokens,
               referenceToken,
               referenceTokenPosition,
+              currentValue: current,
+              realm: realm.name,
             },
           );
         }
 
         const index = Number(referenceToken);
         if (index >= realm.sizeOf(current) && strictArrays) {
-          throw new JSONPointerIndexError(`Invalid array index: '${index}' out of bounds`, {
-            jsonPointer,
-            referenceTokens,
-            referenceToken: index,
-            referenceTokenPosition,
-          });
+          throw new JSONPointerIndexError(
+            `Invalid array index "${index}" at position ${referenceTokenPosition} in ${jsonPointer}: out of bounds`,
+            {
+              jsonPointer,
+              referenceTokens,
+              referenceToken: index,
+              referenceTokenPosition,
+              currentValue: current,
+              realm: realm.name,
+            },
+          );
         }
         return realm.evaluate(current, referenceToken);
       }
 
       if (realm.isObject(current)) {
         if (!realm.has(current, referenceToken) && strictObjects) {
-          throw new JSONPointerKeyError(`Invalid object key: '${referenceToken}' not found`, {
-            jsonPointer,
-            referenceTokens,
-            referenceToken,
-            referenceTokenPosition,
-          });
+          throw new JSONPointerKeyError(
+            `Invalid object key "${referenceToken}" at position ${referenceTokenPosition} in ${jsonPointer}: key not found in object`,
+            {
+              jsonPointer,
+              referenceTokens,
+              referenceToken,
+              referenceTokenPosition,
+              currentValue: current,
+              realm: realm.name,
+            },
+          );
         }
 
         return realm.evaluate(current, referenceToken);
       }
 
-      throw new JSONPointerTypeError(undefined, {
-        jsonPointer,
-        referenceTokens,
-        referenceToken,
-        referenceTokenPosition,
-        currentValue: current,
-      });
+      throw new JSONPointerTypeError(
+        `Invalid reference token "${referenceToken}" at position ${referenceTokenPosition} in ${jsonPointer}: cannot be applied to a non-object/non-array value`,
+        {
+          jsonPointer,
+          referenceTokens,
+          referenceToken,
+          referenceTokenPosition,
+          currentValue: current,
+          realm: realm.name,
+        },
+      );
     }, value);
   } catch (error) {
     if (error instanceof JSONPointerEvaluateError) {

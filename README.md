@@ -48,6 +48,7 @@
         - [Immutable.js](#immutablejs-evaluation-realm)
         - [Custom](#custom-evaluation-realms)
         - [Composing Realms](#composing-evaluation-realms)
+      - [Diagnostics](#diagnostics)
     - [Compilation](#compilation)
     - [Representation](#representation)
       - [JSON String](#json-string)
@@ -507,6 +508,22 @@ const structure = [
 
 evaluate(structure, '/0/a/b/1', { realm : compositeRealm }); // => 'd'
 ```
+
+##### Diagnostics
+
+`@swaggerexpert/json-pointer` provides rich diagnostic information to help identify and resolve issues during JSON Pointer evaluation.
+
+When evaluation fails, the library throws errors from a well-defined hierarchy — all extending from `JSONPointerEvaluateError`.
+These errors carry detailed diagnostic metadata describing what failed, where it failed, and why.
+
+Each error includes:
+
+- `jsonPointer` – the full pointer being evaluated
+- `referenceToken` – the token that caused the failure
+- `referenceTokenPosition` – the index of that token within the pointer
+- `referenceTokens` – the full list of parsed reference tokens
+- `currentValue` – the value being evaluated at the point of failure
+- `realm` – the name of the evaluation realm (e.g., "json")
 
 #### Compilation
 
