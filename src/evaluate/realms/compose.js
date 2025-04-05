@@ -1,5 +1,5 @@
 import EvaluationRealm from './EvaluationRealm.js';
-import JSONPointerEvaluateError from '../errors/JSONPointerEvaluateError.js';
+import JSONPointerEvaluateError from '../../errors/JSONPointerEvaluateError.js';
 
 class CompositeEvaluationRealm extends EvaluationRealm {
   name = 'composite';

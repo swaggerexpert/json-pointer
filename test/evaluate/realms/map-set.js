@@ -8,7 +8,7 @@ import {
   JSONPointerEvaluateError,
   URIFragmentIdentifier,
 } from '../../../src/index.js';
-import MapSetEvaluationRealm from '../../../src/evaluate/realms/map-set.js';
+import MapSetEvaluationRealm from '../../../src/evaluate/realms/map-set/index.js';
 
 describe('evaluate', function () {
   context('Map/Set realm', function () {

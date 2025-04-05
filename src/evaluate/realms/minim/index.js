@@ -1,7 +1,7 @@
 import { ObjectElement, ArrayElement } from 'minim';
 
 import EvaluationRealm from '../EvaluationRealm.js';
-import JSONPointerKeyError from '../../errors/JSONPointerKeyError.js';
+import JSONPointerKeyError from '../../../errors/JSONPointerKeyError.js';
 
 class MinimEvaluationRealm extends EvaluationRealm {
   name = 'minim';

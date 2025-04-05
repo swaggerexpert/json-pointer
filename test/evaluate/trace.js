@@ -1,14 +1,6 @@
 import { assert } from 'chai';
 
-import {
-  evaluate,
-  JSONPointerIndexError,
-  JSONPointerTypeError,
-  JSONPointerKeyError,
-  JSONPointerEvaluateError,
-  URIFragmentIdentifier,
-} from '../../src/index.js';
-import JSONEvaluationRealm from '../../src/evaluate/realms/json.js';
+import { evaluate } from '../../src/index.js';
 
 describe('evaluate', function () {
   context('given trace option', function () {

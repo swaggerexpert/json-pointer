@@ -8,7 +8,7 @@ import {
   JSONPointerEvaluateError,
   URIFragmentIdentifier,
 } from '../../src/index.js';
-import JSONEvaluationRealm from '../../src/evaluate/realms/json.js';
+import JSONEvaluationRealm from '../../src/evaluate/realms/json/index.js';
 
 describe('evaluate', function () {
   const data = {

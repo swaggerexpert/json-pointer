@@ -2,7 +2,7 @@ import parse from '../parse/index.js';
 import testArrayDash from '../test/array-dash.js';
 import testArrayIndex from '../test/array-index.js';
 import TraceBuilder from './TraceBuilder.js';
-import JSONRealm from './realms/json.js';
+import JSONRealm from './realms/json/index.js';
 import JSONPointerEvaluateError from '../errors/JSONPointerEvaluateError.js';
 import JSONPointerTypeError from '../errors/JSONPointerTypeError.js';
 import JSONPointerIndexError from '../errors/JSONPointerIndexError.js';
@@ -191,11 +191,5 @@ const evaluate = (
     });
   }
 };
-
-const trace = {};
-try {
-  evaluate({ a: 'b' }, '/c', { trace });
-} catch {}
-console.dir(trace, { depth: null });
 
 export default evaluate;

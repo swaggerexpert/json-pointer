@@ -1,7 +1,7 @@
 import { isObjectElement, isArrayElement } from '@swagger-api/apidom-core';
 
 import EvaluationRealm from '../EvaluationRealm.js';
-import JSONPointerKeyError from '../../errors/JSONPointerKeyError.js';
+import JSONPointerKeyError from '../../../errors/JSONPointerKeyError.js';
 
 class ApiDOMEvaluationRealm extends EvaluationRealm {
   name = 'apidom';

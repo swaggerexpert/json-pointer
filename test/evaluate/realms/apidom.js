@@ -10,7 +10,7 @@ import {
   JSONPointerEvaluateError,
   URIFragmentIdentifier,
 } from '../../../src/index.js';
-import ApiDOMEvaluationRealm from '../../../src/evaluate/realms/apidom.js';
+import ApiDOMEvaluationRealm from '../../../src/evaluate/realms/apidom/index.js';
 
 describe('evaluate', function () {
   context('ApiDOM realm', function () {

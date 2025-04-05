@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 
-import { evaluate, composeRealms, JSONPointerEvaluateError } from '../../src/index.js';
-import JSONEvaluationRealm from '../../src/evaluate/realms/json.js';
-import MapSetEvaluationRealm from '../../src/evaluate/realms/map-set.js';
+import { evaluate, composeRealms, JSONPointerEvaluateError } from '../../../src/index.js';
+import JSONEvaluationRealm from '../../../src/evaluate/realms/json/index.js';
+import MapSetEvaluationRealm from '../../../src/evaluate/realms/map-set/index.js';
 
 describe('evaluate', function () {
   context('composeRealms', function () {

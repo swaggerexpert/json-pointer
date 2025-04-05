@@ -15,8 +15,8 @@
     },
     "./evaluate/realms/*": {
       "types": "./types/evaluate/realms/*.d.ts",
-      "import": "./es/evaluate/realms/*.mjs",
-      "require": "./cjs/evaluate/realms/*.cjs"
+      "import": "./es/evaluate/realms/*/index.mjs",
+      "require": "./cjs/evaluate/realms/*/index.cjs"
     },
     "./package.json": "./package.json"
   },
