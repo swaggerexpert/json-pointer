@@ -8,7 +8,7 @@ class TraceBuilder {
     this.#trace.steps = [];
     this.#trace.failed = false;
     this.#trace.failedAt = -1;
-    this.#trace.message = 'JSON Pointer successfully evaluated against the value';
+    this.#trace.message = `JSON Pointer "${context.jsonPointer}" was successfully evaluated against the provided value`;
     this.#trace.context = {
       ...context,
       realm: context.realm.name,

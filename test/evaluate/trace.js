@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import { evaluate } from '../../src/index.js';
+import { evaluate, JSONPointerEvaluateError } from '../../src/index.js';
 
 describe('evaluate', function () {
   context('given trace option', function () {
@@ -28,7 +28,7 @@ describe('evaluate', function () {
         ],
         failed: false,
         failedAt: -1,
-        message: 'JSON Pointer successfully evaluated against the value',
+        message: 'JSON Pointer "/a/b" was successfully evaluated against the provided value',
         context: {
           jsonPointer: '/a/b',
           referenceTokens: ['a', 'b'],
@@ -85,6 +85,22 @@ describe('evaluate', function () {
       } catch {}
 
       assert.deepEqual(trace, expected);
+    });
+
+    specify('should produce error message with tracing info', function () {
+      assert.throws(
+        () => evaluate({ a: { b: 'c' } }, '1', { trace: {} }),
+        JSONPointerEvaluateError,
+        'Invalid JSON Pointer: "1". Syntax error at position 0, expected "/"',
+      );
+    });
+
+    specify('should produce error message without tracking info', function () {
+      assert.throws(
+        () => evaluate({ a: { b: 'c' } }, '1'),
+        JSONPointerEvaluateError,
+        'Invalid JSON Pointer: "1". Syntax error at position 0',
+      );
     });
   });
 });

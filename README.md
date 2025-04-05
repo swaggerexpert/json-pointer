@@ -175,6 +175,7 @@ const { result, trace } = parse('1', { trace: true });
 
 result.success; // returns false
 trace.displayTrace(); // returns trace information
+trace.inferExpectations(); // returns parser expectations
 ```
 
 By combining information from `result` and `trace`, it is possible to analyze the parsing process in detail
