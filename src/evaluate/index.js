@@ -13,7 +13,12 @@ const evaluate = (
   jsonPointer,
   { strictArrays = true, strictObjects = true, realm = new JSONRealm(), trace = false } = {},
 ) => {
-  const { result, tree: referenceTokens } = parse(jsonPointer);
+  const {
+    result: parseResult,
+    tree: referenceTokens,
+    trace: parseTrace,
+  } = parse(jsonPointer, { trace: !!trace });
+
   const tracer = trace
     ? new TraceBuilder(trace, {
         jsonPointer,
@@ -25,8 +30,9 @@ const evaluate = (
       })
     : null;
 
-  if (!result.success) {
-    const message = `Invalid JSON Pointer: ${jsonPointer}`;
+  if (!parseResult.success) {
+    let message = `Invalid JSON Pointer: "${jsonPointer}". Syntax error at position ${parseResult.maxMatched}`;
+    message += parseTrace ? `, expected ${parseTrace.inferExpectations()}` : '';
 
     tracer?.step({
       referenceToken: undefined,

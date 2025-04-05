@@ -78,6 +78,7 @@ export interface Stats {
 
 export interface Trace {
   displayTrace(): string;
+  inferExpectations(): string[];
 }
 
 

@@ -1,8 +1,9 @@
-import { Parser, Stats, Trace } from 'apg-lite';
+import { Parser, Stats } from 'apg-lite';
 
 import Grammar from '../grammar.js';
 import JSONPointerParseError from '../errors/JSONPointerParseError.js';
 import ASTTranslator from './translators/ASTTranslator.js';
+import Trace from './trace/Trace.js';
 
 const grammar = new Grammar();
 
