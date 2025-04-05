@@ -48,7 +48,8 @@
         - [Immutable.js](#immutablejs-evaluation-realm)
         - [Custom](#custom-evaluation-realms)
         - [Composing Realms](#composing-evaluation-realms)
-      - [Diagnostics](#diagnostics)
+      - [Evaluation Diagnostics](#evaluation-diagnostics)
+      - [Evaluation Tracing](#evaluation-tracing)
     - [Compilation](#compilation)
     - [Representation](#representation)
       - [JSON String](#json-string)
@@ -509,7 +510,7 @@ const structure = [
 evaluate(structure, '/0/a/b/1', { realm : compositeRealm }); // => 'd'
 ```
 
-##### Diagnostics
+##### Evaluation Diagnostics
 
 `@swaggerexpert/json-pointer` provides rich diagnostic information to help identify and resolve issues during JSON Pointer evaluation.
 
@@ -524,6 +525,91 @@ Each error includes:
 - `referenceTokens` – the full list of parsed reference tokens
 - `currentValue` – the value being evaluated at the point of failure
 - `realm` – the name of the evaluation realm (e.g., "json")
+
+##### Evaluation Tracing
+
+`@swaggerexpert/json-pointer` package supports evaluation tracing, allowing you to inspect each step of JSON Pointer evaluation in detail.
+This is especially useful for debugging, error reporting, visualization tools, or implementing custom behavior like fallbacks and partial evaluations.
+
+How it works?
+
+To enable tracing, provide an empty trace object when calling evaluate.
+`trace` object is populated with detailed information about each step of the evaluation process:
+
+Tracing `successful` evaluation:
+
+```js
+import { evaluate } from '@swaggerexpert/json-pointer';
+
+const trace = {};
+evaluate({ a: 'b' }, '/a', { trace });
+```
+
+```js
+// trace
+{
+  steps: [
+    {
+      referenceToken: 'a',
+      referenceTokenPosition: 0,
+      input: { a: 'b' },
+      inputType: 'object',
+      output: 'b',
+      success: true
+    }
+  ],
+  failed: false,
+  failedAt: -1,
+  message: 'JSON Pointer successfully evaluated against the value',
+  context: {
+    jsonPointer: '/a',
+    referenceTokens: [ 'a' ],
+    strictArrays: true,
+    strictObjects: true,
+    realm: 'json',
+    value: { a: 'b' }
+  }
+}
+```
+
+Tracing `failed` evaluation:
+
+```js
+import { evaluate } from '@swaggerexpert/json-pointer';
+
+const trace = {};
+try {
+  evaluate({ a: 'b' }, '/c', { trace });
+} catch {}
+```
+
+```js
+// trace
+{
+  steps: [
+    {
+      referenceToken: 'c',
+      referenceTokenPosition: 0,
+      input: { a: 'b' },
+      inputType: 'object',
+      output: undefined,
+      success: false,
+      reason: 'Invalid object key "c" at position 0 in "/c": key not found in object'
+    }
+  ],
+  failed: true,
+  failedAt: 0,
+  message: 'Invalid object key "c" at position 0 in "/c": key not found in object',
+  context: {
+  jsonPointer: '/c',
+    referenceTokens: [ 'c' ],
+    strictArrays: true,
+    strictObjects: true,
+    realm: 'json',
+    value: { a: 'b' }
+  }
+}
+```
 
 #### Compilation
 

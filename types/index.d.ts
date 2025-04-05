@@ -111,6 +111,7 @@ export interface EvaluationOptions<R extends EvaluationRealm = JSONEvaluationRea
   strictArrays?: boolean;
   strictObjects?: boolean;
   realm?: R;
+  trace?: false | Partial<EvaluationTrace>;
 }
 
 export declare abstract class EvaluationRealm {
@@ -122,6 +123,32 @@ export declare abstract class EvaluationRealm {
   public abstract has(node: unknown, referenceToken: string): boolean;
   public abstract evaluate<T = unknown>(node: unknown, referenceToken: string): T;
 }
+
+/* Tracing start */
+export interface EvaluationTrace {
+  steps: EvaluationStep[];
+  failed: boolean;
+  failedAt: number;
+  message?: string;
+  context: TraceContext;
+}
+export interface EvaluationStep {
+  referenceToken: string;
+  referenceTokenPosition: number;
+  input: unknown;
+  inputType: 'object' | 'array' | 'unrecognized';
+  output: unknown;
+  success: boolean;
+}
+export interface TraceContext {
+  jsonPointer: string;
+  referenceTokens: string[];
+  strictArrays: boolean;
+  strictObjects: boolean;
+  realm: string;
+  value: unknown;
+}
+/* Tracking end */
 
 /**
  * Representing
