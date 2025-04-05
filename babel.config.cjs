@@ -1,15 +1,15 @@
-const path = require("node:path");
+const path = require('node:path');
 
 module.exports = {
   env: {
     cjs: {
-      browserslistEnv: "isomorphic-production",
+      browserslistEnv: 'isomorphic-production',
       presets: [
         [
-          "@babel/preset-env",
+          '@babel/preset-env',
           {
             debug: false,
-            modules: "commonjs",
+            modules: 'commonjs',
             loose: true,
             useBuiltIns: false,
             forceAllTransforms: false,
@@ -19,18 +19,15 @@ module.exports = {
       ],
       plugins: [
         [
-          path.join(
-            __dirname,
-            "./scripts/babel-plugin-add-import-extension.cjs",
-          ),
-          { extension: "cjs" },
+          path.join(__dirname, './scripts/babel-plugin-add-import-extension.cjs'),
+          { extension: 'cjs' },
         ],
         [
-          "module-resolver",
+          'module-resolver',
           {
             resolvePath(sourcePath, currentFile) {
-              if (sourcePath === "apg-lite") {
-                const apgLiteCJS = path.resolve("./src/apg-lite.cjs");
+              if (sourcePath === 'apg-lite') {
+                const apgLiteCJS = path.resolve('./src/apg-lite.cjs');
                 const currentDir = path.dirname(currentFile);
                 return path.relative(currentDir, apgLiteCJS);
               }
@@ -41,10 +38,10 @@ module.exports = {
       ],
     },
     es: {
-      browserslistEnv: "isomorphic-production",
+      browserslistEnv: 'isomorphic-production',
       presets: [
         [
-          "@babel/preset-env",
+          '@babel/preset-env',
           {
             debug: false,
             modules: false,
@@ -56,11 +53,23 @@ module.exports = {
       ],
       plugins: [
         [
-          path.join(
-            __dirname,
-            "./scripts/babel-plugin-add-import-extension.cjs",
-          ),
-          { extension: "mjs" },
+          path.join(__dirname, './scripts/babel-plugin-add-import-extension.cjs'),
+          { extension: 'mjs' },
+        ],
+      ],
+    },
+    browser: {
+      browserslistEnv: 'browser-production',
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            debug: false,
+            modules: 'auto',
+            useBuiltIns: false,
+            forceAllTransforms: false,
+            ignoreBrowserslistConfig: false,
+          },
         ],
       ],
     },

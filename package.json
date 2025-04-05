@@ -5,6 +5,7 @@
   },
   "version": "2.4.0",
   "description": "RCF 6901 implementation of JSON Pointer",
+  "unpkg": "./dist/json-pointer.browser.min.js",
   "main": "./cjs/index.cjs",
   "types": "./types/index.d.ts",
   "exports": {
@@ -26,10 +27,11 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "grammar:compile": "node ./scripts/apg-js.js --lite --in=./src/grammar.bnf --out=./src/grammar.js && cd ./src",
-    "build": "npm run grammar:compile && npm run build:es && npm run build:cjs && npm run build:cjs:apg-lite",
+    "build": "npm run grammar:compile && npm run build:es && npm run build:cjs && npm run build:cjs:apg-lite && npm run build:umd:browser",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --extensions '.js' --out-file-extension '.mjs'",
     "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir cjs --extensions '.js' --out-file-extension '.cjs'",
     "build:cjs:apg-lite": "cross-env BABEL_ENV=cjs babel node_modules/apg-lite/lib/parser.js --out-file ./cjs/apg-lite.cjs",
+    "build:umd:browser": "cross-env BABEL_ENV=browser webpack --config config/webpack/browser.config.js --progress",
     "test": "mocha",
     "test:watch": "npm-watch test",
     "watch": "npm-watch"
@@ -61,6 +63,7 @@
   "files": [
     "es/",
     "cjs/",
+    "dist/",
     "types/",
     "LICENSE",
     "NOTICE",
@@ -80,6 +83,7 @@
     "@swagger-api/apidom-core": "^1.0.0-beta.30",
     "@swagger-api/apidom-ns-openapi-3-0": "^1.0.0-beta.30",
     "apg-js": "^4.4.0",
+    "babel-loader": "^10.0.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "chai": "=5.2.0",
     "cross-env": "^7.0.3",
@@ -88,6 +92,9 @@
     "minim": "^0.23.8",
     "mocha": "=11.1.0",
     "npm-watch": "^0.13.0",
-    "prettier": "^3.5.2"
+    "prettier": "^3.5.2",
+    "terser-webpack-plugin": "^5.3.14",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
   }
 }
