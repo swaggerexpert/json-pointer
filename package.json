@@ -6,6 +6,7 @@
   "version": "2.5.0",
   "description": "RCF 6901 implementation of JSON Pointer",
   "unpkg": "./dist/json-pointer.browser.min.js",
+  "jsdelivr": "./dist/json-pointer.browser.min.js",
   "main": "./cjs/index.cjs",
   "types": "./types/index.d.ts",
   "exports": {

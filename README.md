@@ -5,6 +5,7 @@
 [![Test workflow](https://github.com/swaggerexpert/json-pointer/actions/workflows/test.yml/badge.svg)](https://github.com/swaggerexpert/json-pointer/actions)
 [![Dependabot enabled](https://img.shields.io/badge/Dependabot-enabled-blue.svg)](https://dependabot.com/)
 [![try on RunKit](https://img.shields.io/badge/try%20on-RunKit-brightgreen.svg?style=flat)](https://npm.runkit.com/@swaggerexpert/json-pointer)
+[![](https://data.jsdelivr.com/v1/package/npm/@swaggerexpert/json-pointer/badge)](https://www.jsdelivr.com/package/npm/@swaggerexpert/json-pointer)
 [![Tidelift](https://tidelift.com/badges/package/npm/@swaggerexpert%2Fjson-pointer)](https://tidelift.com/subscription/pkg/npm-.swaggerexpert-json-pointer?utm_source=npm-swaggerexpert-json-pointer&utm_medium=referral&utm_campaign=readme)
 
 `@swaggerexpert/json-pointer` is a **parser**, **validator**, **evaluator**, **compiler** and **representer** for [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901) JavaScript Object Notation (JSON) Pointer.
@@ -69,6 +70,43 @@ You can install `@swaggerexpert/json-pointer` using `npm`:
 ```sh
  $ npm install @swaggerexpert/json-pointer
 ```
+
+---
+
+**[unpkg.com](https://unpkg.com/)**
+
+Include following script tag into your HTML file:
+
+```html
+<script src="https://unpkg.com/@swaggerexpert/json-pointer@latest/dist/json-pointer.browser.min.js"></script>
+```
+
+Global variable `JSONPointer` will be available in the browser matching interface of `@swaggerexpert/json-pointer` package.
+`json-pointer.browser.min.js` is [UMD](https://github.com/umdjs/umd?tab=readme-ov-file#umd-universal-module-definition) artifact of the package.
+There is also unminified `json-pointer.browser.js` artifacts, suitable for debugging.
+
+---
+
+**[jsDelivr](https://www.jsdelivr.com/)**
+
+Include following script tag into your HTML file (ESM mode):
+
+```html
+<script type="module">
+  import * as JSONPointer from 'https://cdn.jsdelivr.net/npm/@swaggerexpert/json-pointer@latest/+esm'
+</script>
+```
+Local variable `JSONPointer` will be available in scope of the `<script>` tag matching interface of `@swaggerexpert/json-pointer` package.
+
+Or include following script tag into your HTML file (UMD mode):
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@swaggerexpert/json-pointer@latest/dist/json-pointer.browser.min.js"></script>
+```
+
+Global variable `JSONPointer` will be available in the browser matching interface of `@swaggerexpert/json-pointer` package.
+`json-pointer.browser.min.js` is [UMD](https://github.com/umdjs/umd?tab=readme-ov-file#umd-universal-module-definition) artifact of the package.
+There is also unminified `json-pointer.browser.js` artifacts, suitable for debugging.
 
 ### Usage
 
