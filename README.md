@@ -81,9 +81,9 @@ Include following script tag into your HTML file:
 <script src="https://unpkg.com/@swaggerexpert/json-pointer@latest/dist/json-pointer.browser.min.js"></script>
 ```
 
-Global variable `JSONPointer` will be available in the browser matching interface of `@swaggerexpert/json-pointer` package.
-`json-pointer.browser.min.js` is [UMD](https://github.com/umdjs/umd?tab=readme-ov-file#umd-universal-module-definition) artifact of the package.
-There is also unminified `json-pointer.browser.js` artifacts, suitable for debugging.
+Global variable `JSONPointer` will be available in the browser matching interface of `@swaggerexpert/json-pointer` npm package.
+`json-pointer.browser.min.js` is [UMD](https://github.com/umdjs/umd?tab=readme-ov-file#umd-universal-module-definition) minified build artifact.
+There is also unminified `json-pointer.browser.js` artifact, suitable for debugging.
 
 ---
 
@@ -104,9 +104,9 @@ Or include following script tag into your HTML file (UMD mode):
 <script src="https://cdn.jsdelivr.net/npm/@swaggerexpert/json-pointer@latest/dist/json-pointer.browser.min.js"></script>
 ```
 
-Global variable `JSONPointer` will be available in the browser matching interface of `@swaggerexpert/json-pointer` package.
-`json-pointer.browser.min.js` is [UMD](https://github.com/umdjs/umd?tab=readme-ov-file#umd-universal-module-definition) artifact of the package.
-There is also unminified `json-pointer.browser.js` artifacts, suitable for debugging.
+Global variable `JSONPointer` will be available in the browser matching interface of `@swaggerexpert/json-pointer` npm package.
+`json-pointer.browser.min.js` is [UMD](https://github.com/umdjs/umd?tab=readme-ov-file#umd-universal-module-definition) minified build artifact.
+There is also unminified `json-pointer.browser.js` artifact, suitable for debugging.
 
 ### Usage
 
@@ -217,7 +217,7 @@ trace.inferExpectations(); // returns parser expectations
 ```
 
 By combining information from `result` and `trace`, it is possible to analyze the parsing process in detail
-and generate a messages like this: `'Syntax error at position 0, expected "/"'`. Please see this
+and generate a messages like this: `'Invalid JSON Pointer: "1". Syntax error at position 0, expected "/"'`. Please see this
 [test file](https://github.com/swaggerexpert/json-pointer/blob/main/test/parse/trace.js) for more information how to achieve that.
 
 #### Validation
@@ -282,7 +282,7 @@ unescape('~1foo'); // => '/foo'
 
 Evaluation of a JSON Pointer begins with a reference to the root
 value of a JSON document and completes with a reference to some value
-within the document.  Each reference token in the JSON Pointer is
+within the document. Each reference token in the JSON Pointer is
 evaluated sequentially.
 
 ```js
@@ -420,8 +420,8 @@ evaluate(map, '/a/1', { realm: new MapSetEvaluationRealm() }); // => 'c'
 
 ###### Minim Evaluation Realm
 
-The Minim Evaluation Realm extends JSON Pointer evaluation to support Minim data structures,
-specifically ObjectElement, ArrayElement, and other element types from the [minim](https://github.com/refractproject/minim).
+The Minim Evaluation Realm extends JSON Pointer evaluation to support `minim` data structures,
+specifically `ObjectElement`, `ArrayElement`, and other element types from the [minim](https://github.com/refractproject/minim).
 
 Minim is widely used in API description languages (e.g., OpenAPI, API Blueprint, AsyncAPI and other API Description processing tools)
 to represent structured API data. The Minim Evaluation Realm enables seamless JSON Pointer traversal for these structures.
@@ -450,7 +450,7 @@ The [ApiDOM](https://github.com/swagger-api/apidom) Evaluation Realm is an integ
 evaluation of JSON Pointer expressions on ApiDOM structures. It provides compatibility with ApiDOM [core](https://github.com/swagger-api/apidom/tree/main/packages/apidom-core) and namespace packages (`@swagger-api/apidom-ns-*`),
 allowing to traverse and query ApiDOM element instances.
 
-Before using the ApiDOM Evaluation Realm, you need to install the `@swagger-api/apidom-core` packages:
+Before using the ApiDOM Evaluation Realm, you need to install the `@swagger-api/apidom-core` package:
 
 ```sh
  $ npm install --save @swagger-api/apidom-core
@@ -473,7 +473,7 @@ evaluate(objectElement, '/a/1', { realm: new ApiDOMEvaluationRealm() }); // => S
 The [Immutable.js](https://immutable-js.com/) Evaluation Realm is an integration layer that enables
 evaluation of JSON Pointer expressions on Immutable.js structures.
 
-Before using the Immutable.js Evaluation Realm, you need to install the `immutable` packages:
+Before using the Immutable.js Evaluation Realm, you need to install the `immutable` package:
 
 ```sh
  $ npm install --save immutable
@@ -504,7 +504,7 @@ One way to create a custom realm is to extend the `EvaluationRealm` class and im
 ```js
 import { evaluate, EvaluationRealm } from '@swaggerexpert/json-pointer';
 
-class CustomEvaluationRealms extends EvaluationRealm {
+class CustomEvaluationRealm extends EvaluationRealm {
   name = 'cusotm';
 
   isArray(node) { ... }
@@ -514,7 +514,7 @@ class CustomEvaluationRealms extends EvaluationRealm {
   evaluate(node, referenceToken) { ... }
 }
 
-evaluate({ a: 'b' }, '/a', { realm: new CustomEvaluationRealms() }); // => 'b'
+evaluate({ a: 'b' }, '/a', { realm: new CustomEvaluationRealm() }); // => 'b'
 ```
 
 ###### Composing Evaluation Realms
@@ -553,10 +553,10 @@ evaluate(structure, '/0/a/b/1', { realm : compositeRealm }); // => 'd'
 
 `@swaggerexpert/json-pointer` provides rich diagnostic information to help identify and resolve issues during JSON Pointer evaluation.
 
-When evaluation fails, the library throws errors from a well-defined hierarchy — all extending from `JSONPointerEvaluateError`.
+When evaluation fails, the library throws [errors](#errors) from a well-defined hierarchy — all extending from `JSONPointerEvaluateError`.
 These errors carry detailed diagnostic metadata describing what failed, where it failed, and why.
 
-Each error includes:
+Each error includes following fields:
 
 - `jsonPointer` – the full pointer being evaluated
 - `referenceToken` – the token that caused the failure
@@ -599,7 +599,7 @@ evaluate({ a: 'b' }, '/a', { trace });
   ],
   failed: false,
   failedAt: -1,
-  message: 'JSON Pointer successfully evaluated against the value',
+  message: 'JSON Pointer "/a" successfully evaluated against the provided value',
   context: {
     jsonPointer: '/a',
     referenceTokens: [ 'a' ],
@@ -652,7 +652,7 @@ try {
 
 #### Compilation
 
-Compilation is the process of transforming a list of reference tokens into a JSON Pointer.
+Compilation is the process of transforming a list of unescaped reference tokens into a JSON Pointer.
 Reference tokens are escaped before compiled into a JSON Pointer.
 
 ```js
@@ -687,7 +687,7 @@ JSONString.from('"/foo\\"bar"'); // => '/foo"bar'
 
 A JSON Pointer can be represented in a URI fragment identifier by
 encoding it into octets using UTF-8 [RFC3629](https://datatracker.ietf.org/doc/html/rfc3629), while percent-encoding
-those characters not allowed by the fragment rule in [RFC3986](https://datatracker.ietf.org/doc/html/rfc3986).
+those characters not allowed by the fragment rule in [RFC3986](https://datatracker.ietf.org/doc/html/rfc3986#section-3.5).
 
 ```js
 import { URIFragmentIdentifier } from '@swaggerexpert/json-pointer';
@@ -699,7 +699,7 @@ URIFragmentIdentifier.from('#/foo%22bar'); // => '/foo"bar'
 #### Errors
 
 `@swaggerexpert/json-pointer` provides a structured error class hierarchy,
-enabling precise error handling across JSON Pointer operations, including parsing, evaluation ,compilation and validation.
+enabling precise error handling across JSON Pointer operations, including parsing, evaluation, compilation and validation.
 
 ```js
 import {
