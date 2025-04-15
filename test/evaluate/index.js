@@ -104,6 +104,14 @@ describe('evaluate', function () {
       assert.throws(() => evaluate(data, '/foo/x'), JSONPointerIndexError);
     });
 
+    specify('should throw JSONPointerIndexError for unsafe integer array index', function () {
+      assert.throws(
+        () => evaluate(data, '/foo/9007199254740992'),
+        JSONPointerIndexError,
+        /I-JSON safe integer range \(0 to 2\^53 - 1\)/,
+      );
+    });
+
     specify('should throw JSONPointerIndexError for out-of-bounds array index', function () {
       assert.throws(() => evaluate(data, '/foo/5'), JSONPointerIndexError);
     });

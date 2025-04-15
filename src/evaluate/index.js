@@ -8,6 +8,8 @@ import JSONPointerTypeError from '../errors/JSONPointerTypeError.js';
 import JSONPointerIndexError from '../errors/JSONPointerIndexError.js';
 import JSONPointerKeyError from '../errors/JSONPointerKeyError.js';
 
+const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER.toString();
+
 const evaluate = (
   value,
   jsonPointer,
@@ -103,6 +105,29 @@ const evaluate = (
           });
         }
 
+        if (
+          referenceToken.length > MAX_SAFE_INTEGER.length ||
+          (referenceToken.length === MAX_SAFE_INTEGER.length && referenceToken > MAX_SAFE_INTEGER)
+        ) {
+          const message = `Invalid array index "${referenceToken}" at position ${referenceTokenPosition} in "${jsonPointer}": must be a non-negative integer within the I-JSON safe integer range (0 to 2^53 - 1)`;
+
+          tracer?.step({
+            referenceToken,
+            input: current,
+            success: false,
+            reason: message,
+          });
+
+          throw new JSONPointerIndexError(message, {
+            jsonPointer,
+            referenceTokens,
+            referenceToken,
+            referenceTokenPosition,
+            currentValue: current,
+            realm: realm.name,
+          });
+        }
+
         const index = Number(referenceToken);
         if (index >= realm.sizeOf(current) && strictArrays) {
           const message = `Invalid array index "${index}" at position ${referenceTokenPosition} in "${jsonPointer}": out of bounds`;
@@ -117,7 +142,7 @@ const evaluate = (
           throw new JSONPointerIndexError(message, {
             jsonPointer,
             referenceTokens,
-            referenceToken: index,
+            referenceToken,
             referenceTokenPosition,
             currentValue: current,
             realm: realm.name,
