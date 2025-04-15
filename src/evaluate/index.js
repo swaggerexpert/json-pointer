@@ -21,16 +21,17 @@ const evaluate = (
     trace: parseTrace,
   } = parse(jsonPointer, { trace: !!trace });
 
-  const tracer = trace
-    ? new TraceBuilder(trace, {
-        jsonPointer,
-        referenceTokens,
-        strictArrays,
-        strictObjects,
-        realm,
-        value,
-      })
-    : null;
+  const tracer =
+    typeof trace === 'object' && trace !== null
+      ? new TraceBuilder(trace, {
+          jsonPointer,
+          referenceTokens,
+          strictArrays,
+          strictObjects,
+          realm,
+          value,
+        })
+      : null;
 
   if (!parseResult.success) {
     let message = `Invalid JSON Pointer: "${jsonPointer}". Syntax error at position ${parseResult.maxMatched}`;

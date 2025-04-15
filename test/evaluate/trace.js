@@ -3,7 +3,7 @@ import { assert } from 'chai';
 import { evaluate, JSONPointerEvaluateError } from '../../src/index.js';
 
 describe('evaluate', function () {
-  context('given trace option', function () {
+  context('given trace option as object', function () {
     specify('should trace successful evaluation', function () {
       const data = { a: { b: 'c' } };
       const trace = {};
@@ -88,19 +88,40 @@ describe('evaluate', function () {
     });
 
     specify('should produce error message with tracing info', function () {
+      const trace = {};
+
       assert.throws(
-        () => evaluate({ a: { b: 'c' } }, '1', { trace: {} }),
+        () => evaluate({ a: { b: 'c' } }, '1', { trace }),
+        JSONPointerEvaluateError,
+        'Invalid JSON Pointer: "1". Syntax error at position 0, expected "/"',
+      );
+      assert.lengthOf(trace.steps, 1);
+    });
+  });
+
+  context('given trace option as boolean', function () {
+    specify('should produce error message with tracing info', function () {
+      assert.throws(
+        () => evaluate({ a: { b: 'c' } }, '1', { trace: true }),
         JSONPointerEvaluateError,
         'Invalid JSON Pointer: "1". Syntax error at position 0, expected "/"',
       );
     });
+  });
 
-    specify('should produce error message without tracking info', function () {
-      assert.throws(
-        () => evaluate({ a: { b: 'c' } }, '1'),
-        JSONPointerEvaluateError,
-        'Invalid JSON Pointer: "1". Syntax error at position 0',
-      );
-    });
+  specify('should produce error message without tracking info #1', function () {
+    assert.throws(
+      () => evaluate({ a: { b: 'c' } }, '1'),
+      JSONPointerEvaluateError,
+      'Invalid JSON Pointer: "1". Syntax error at position 0',
+    );
+  });
+
+  specify('should produce error message without tracking info #2', function () {
+    assert.throws(
+      () => evaluate({ a: { b: 'c' } }, '1', { trace: false }),
+      JSONPointerEvaluateError,
+      'Invalid JSON Pointer: "1". Syntax error at position 0',
+    );
   });
 });

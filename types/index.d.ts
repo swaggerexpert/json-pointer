@@ -112,7 +112,7 @@ export interface EvaluationOptions<R extends EvaluationRealm = JSONEvaluationRea
   strictArrays?: boolean;
   strictObjects?: boolean;
   realm?: R;
-  trace?: false | Partial<EvaluationTrace>;
+  trace?: boolean | Partial<EvaluationTrace>;
 }
 
 export declare abstract class EvaluationRealm {
