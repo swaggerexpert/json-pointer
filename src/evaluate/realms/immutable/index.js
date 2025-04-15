@@ -1,16 +1,18 @@
-import { isMap, isList } from 'immutable';
+import Immutable from 'immutable';
 
 import EvaluationRealm from '../EvaluationRealm.js';
+
+const { List, Map } = Immutable;
 
 class ImmutableEvaluationRealm extends EvaluationRealm {
   name = 'immutable';
 
   isArray(node) {
-    return isList(node);
+    return List.isList(node);
   }
 
   isObject(node) {
-    return isMap(node);
+    return Map.isMap(node);
   }
 
   sizeOf(node) {

@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { fromJS } from 'immutable';
+import Immutable from 'immutable';
 
 import {
   evaluate,
@@ -12,6 +12,8 @@ import {
 import ImmutableEvaluationRealm from '../../../src/evaluate/realms/immutable/index.js';
 
 describe('evaluate', function () {
+  const { fromJS } = Immutable;
+
   context('Immutable.js realm', function () {
     const realm = new ImmutableEvaluationRealm();
     const map = fromJS({
