@@ -108,7 +108,7 @@ describe('evaluate', function () {
       assert.throws(
         () => evaluate(data, '/foo/9007199254740992'),
         JSONPointerIndexError,
-        /I-JSON safe integer range \(0 to 2\^53 - 1\)/,
+        /must be an unsigned 32-bit integer/,
       );
     });
 

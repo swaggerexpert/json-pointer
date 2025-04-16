@@ -106,11 +106,11 @@ const evaluate = (
           });
         }
 
-        if (
-          referenceToken.length > MAX_SAFE_INTEGER.length ||
-          (referenceToken.length === MAX_SAFE_INTEGER.length && referenceToken > MAX_SAFE_INTEGER)
-        ) {
-          const message = `Invalid array index "${referenceToken}" at position ${referenceTokenPosition} in "${jsonPointer}": must be a non-negative integer within the I-JSON safe integer range (0 to 2^53 - 1)`;
+        const index = Number(referenceToken);
+        const indexUint32 = index >>> 0;
+
+        if (strictArrays && index !== indexUint32) {
+          const message = `Invalid array index "${referenceToken}" at position ${referenceTokenPosition} in "${jsonPointer}": index must be an unsigned 32-bit integer`;
 
           tracer?.step({
             referenceToken,
@@ -129,8 +129,7 @@ const evaluate = (
           });
         }
 
-        const index = Number(referenceToken);
-        if (index >= realm.sizeOf(current) && strictArrays) {
+        if (strictArrays && index >= realm.sizeOf(current)) {
           const message = `Invalid array index "${index}" at position ${referenceTokenPosition} in "${jsonPointer}": out of bounds`;
 
           tracer?.step({
