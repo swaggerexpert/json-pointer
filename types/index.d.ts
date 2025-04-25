@@ -208,9 +208,35 @@ export interface JSONPointerErrorOptions {
 export declare class JSONPointerError extends Error {
   constructor(message?: string, options?: JSONPointerErrorOptions);
 }
-export declare class JSONPointerParseError extends JSONPointerError { }
-export declare class JSONPointerCompileError extends JSONPointerError { }
-export declare class JSONPointerEvaluateError extends JSONPointerError { }
-export declare class JSONPointerTypeError extends JSONPointerEvaluateError { }
-export declare class JSONPointerKeyError extends JSONPointerEvaluateError { }
-export declare class JSONPointerIndexError extends JSONPointerEvaluateError { }
+export declare class JSONPointerParseError extends JSONPointerError {
+  jsonPointer?: JSONPointer;
+}
+export declare class JSONPointerCompileError extends JSONPointerError {
+  referenceTokens: UnescapedReferenceToken[];
+}
+export declare class JSONPointerEvaluateError extends JSONPointerError {
+  currentValue?: unknown;
+  realm?: string;
+  referenceTokens?: UnescapedReferenceToken[];
+}
+export declare class JSONPointerTypeError extends JSONPointerEvaluateError {
+  jsonPointer: JSONPointer;
+  referenceTokens: UnescapedReferenceToken[];
+  referenceToken: UnescapedReferenceToken;
+  referenceTokenPosition: number;
+  currentValue: unknown;
+  realm: string;
+}
+export declare class JSONPointerKeyError extends JSONPointerEvaluateError {
+  currentValue: unknown;
+  realm: string;
+  referenceToken: UnescapedReferenceToken;
+}
+export declare class JSONPointerIndexError extends JSONPointerEvaluateError {
+  jsonPointer?: JSONPointer;
+  referenceTokens: UnescapedReferenceToken[];
+  referenceTokenPosition?: number;
+  currentValue: unknown;
+  realm: string;
+  referenceToken: UnescapedReferenceToken;
+}
