@@ -164,6 +164,9 @@ export interface URIFragmentIdentifier {
   from(jsonPointer: URIFragmentJSONPointer): JSONPointer
 }
 
+export declare const JSONString: JSONString;
+export declare const URIFragmentIdentifier: URIFragmentIdentifier;
+
 /**
  * Grammar
  */
