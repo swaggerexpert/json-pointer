@@ -329,7 +329,7 @@ evaluate(value, '/bar'); // => throws JSONPointerKeyError
 [comment]: <> (SPDX-FileCopyrightText: Copyright &#40;c&#41; 2013 IETF Trust and the persons identified as the document authors.  All rights reserved.)
 [comment]: <> (SPDX-License-Identifier: BSD-2-Clause)
 
-By default, the evaluation is **strict**, meaning error condition will be raised if it fails to
+By default, the evaluation is **strict**, meaning an error condition will be raised if it fails to
 resolve a concrete value for any of the JSON pointer's reference tokens. For example, if an array
 is referenced with a non-numeric token, an error condition will be raised.
 

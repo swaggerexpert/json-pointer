@@ -1,4 +1,5 @@
 import EvaluationRealm from '../EvaluationRealm.js';
+import JSONPointerIndexError from '../../../errors/JSONPointerIndexError.js';
 
 class JSONEvaluationRealm extends EvaluationRealm {
   name = 'json';
@@ -23,7 +24,21 @@ class JSONEvaluationRealm extends EvaluationRealm {
 
   has(node, referenceToken) {
     if (this.isArray(node)) {
-      return Number(referenceToken) < this.sizeOf(node);
+      const index = Number(referenceToken);
+      const indexUint32 = index >>> 0;
+
+      if (index !== indexUint32) {
+        throw new JSONPointerIndexError(
+          `Invalid array index "${referenceToken}": index must be an unsinged 32-bit integer`,
+          {
+            referenceToken,
+            currentValue: node,
+            realm: this.name,
+          },
+        );
+      }
+
+      return indexUint32 < this.sizeOf(node);
     }
     if (this.isObject(node)) {
       return Object.prototype.hasOwnProperty.call(node, referenceToken);

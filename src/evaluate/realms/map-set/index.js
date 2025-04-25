@@ -1,4 +1,5 @@
 import EvaluationRealm from '../EvaluationRealm.js';
+import JSONPointerIndexError from '../../../errors/JSONPointerIndexError.js';
 
 class MapSetEvaluationRealm extends EvaluationRealm {
   name = 'map-set';
@@ -30,7 +31,23 @@ class MapSetEvaluationRealm extends EvaluationRealm {
 
   evaluate(node, referenceToken) {
     if (this.isArray(node)) {
-      return [...node][Number(referenceToken)];
+      const index = Number(referenceToken);
+      const iterator = node.values();
+
+      for (let i = 0; i < index; i += 1) {
+        if (iterator.next().done) {
+          throw new JSONPointerIndexError(
+            `Invalid array index "${referenceToken}": out of bounds`,
+            {
+              referenceToken,
+              currentValue: node,
+              realm: this.name,
+            },
+          );
+        }
+      }
+
+      return iterator.next().value;
     }
     return node.get(referenceToken);
   }
