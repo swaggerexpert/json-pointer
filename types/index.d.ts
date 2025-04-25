@@ -1,5 +1,3 @@
-import type JSONEvaluationRealm from './evaluate/realms/json.ts';
-
 export type JSONPointer = string;
 export type URIFragmentJSONPointer = string;
 export type StringifiedJSONPointer = string;
@@ -108,10 +106,10 @@ export function compile(referenceTokens: readonly UnescapedReferenceToken[]): JS
 export function evaluate<T = unknown>(value: unknown, jsonPointer: JSONPointer, options?: EvaluationOptions): T;
 export function composeRealms(...realms: EvaluationRealm[]): EvaluationRealm;
 
-export interface EvaluationOptions<R extends EvaluationRealm = JSONEvaluationRealm> {
+export interface EvaluationOptions {
   strictArrays?: boolean;
   strictObjects?: boolean;
-  realm?: R;
+  realm?: EvaluationRealm;
   trace?: boolean | Partial<EvaluationTrace>;
 }
 
