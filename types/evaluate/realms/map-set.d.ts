@@ -1,4 +1,4 @@
-import type { EvaluationRealm } from '../../index';
+import type { EvaluationRealm } from '../../index.ts';
 
 declare class MapSetEvaluationRealm extends EvaluationRealm {
   public readonly name: 'map-set';

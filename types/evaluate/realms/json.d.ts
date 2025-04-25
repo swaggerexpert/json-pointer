@@ -1,4 +1,14 @@
-import type { EvaluationRealm, JSONArray, JSONObject } from '../../index';
+import type { EvaluationRealm } from '../../index.ts';
+
+export type JSONPrimitive = string | number | boolean | null;
+
+export interface JSONObject {
+  [key: string]: JSONValue;
+}
+
+export interface JSONArray extends Array<JSONValue> { }
+
+export type JSONValue = JSONPrimitive | JSONObject | JSONArray;
 
 declare class JSONEvaluationRealm extends EvaluationRealm {
   public readonly name: 'json';

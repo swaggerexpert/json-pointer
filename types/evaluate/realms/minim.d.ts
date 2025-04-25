@@ -1,4 +1,4 @@
-import type { EvaluationRealm } from '../../index';
+import type { EvaluationRealm } from '../../index.ts';
 
 declare class MinimEvaluationRealm extends EvaluationRealm {
   public readonly name: 'minim';

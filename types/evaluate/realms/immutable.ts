@@ -1,4 +1,4 @@
-import type { EvaluationRealm } from '../../index';
+import type { EvaluationRealm } from '../../index.ts';
 
 declare class ImmutableEvaluationRealm extends EvaluationRealm {
   public readonly name: 'immutable';

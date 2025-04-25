@@ -1,4 +1,4 @@
-import type JSONEvaluationRealm from './evaluate/realms/json';
+import type JSONEvaluationRealm from './evaluate/realms/json.ts';
 
 export type JSONPointer = string;
 export type URIFragmentJSONPointer = string;
