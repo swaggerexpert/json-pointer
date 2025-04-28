@@ -468,6 +468,19 @@ const objectElement = new ObjectElement({
 evaluate(objectElement, '/a/1', { realm: new ApiDOMEvaluationRealm() }); // => StringElement('c')
 ```
 
+or using contextual evaluation:
+
+```js
+import { ObjectElement } from '@swagger-api/apidom-core';
+import { evaluate } from '@swaggerexpert/json-pointer/evaluate/realms/apidom';
+
+const objectElement = new ObjectElement({
+  a: ['b', 'c']
+});
+
+evaluate(objectElement, '/a/1'); // => StringElement('c')
+```
+
 ###### Immutable.js Evaluation Realm
 
 The [Immutable.js](https://immutable-js.com/) Evaluation Realm is an integration layer that enables
