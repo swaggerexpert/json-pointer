@@ -18,8 +18,6 @@ declare class ApiDOMEvaluationRealm extends EvaluationRealm {
  */
 export function evaluate<T = unknown>(value: unknown, jsonPointer: JSONPointer, options?: ApiDOMRealmEvaluationOptions): T;
 
-export interface ApiDOMRealmEvaluationOptions extends EvaluationOptions {
-  realm: ApiDOMEvaluationRealm;
-}
+export type ApiDOMRealmEvaluationOptions = Omit<EvaluationOptions, 'realm'>;
 
 export default ApiDOMEvaluationRealm;
