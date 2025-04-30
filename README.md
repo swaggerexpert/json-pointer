@@ -663,6 +663,10 @@ try {
 }
 ```
 
+`trace` option can additionally be set to `true` to enable parse tracing without providing an empty object.
+When parsing of the JSON Pointer fails during evaluation, the generated error will contain additional information explaining the failure.
+This is the default behavior of the `trace` option. You can also set `trace` to `false` to disable tracing entirely.
+
 #### Compilation
 
 Compilation is the process of transforming a list of unescaped reference tokens into a JSON Pointer.

@@ -11,7 +11,7 @@ import JSONPointerKeyError from '../errors/JSONPointerKeyError.js';
 const evaluate = (
   value,
   jsonPointer,
-  { strictArrays = true, strictObjects = true, realm = new JSONRealm(), trace = false } = {},
+  { strictArrays = true, strictObjects = true, realm = new JSONRealm(), trace = true } = {},
 ) => {
   const {
     result: parseResult,
