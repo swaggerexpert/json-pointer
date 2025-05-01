@@ -86,4 +86,18 @@ describe('URI Fragment Identifier (to/from)', function () {
       },
     );
   });
+
+  context('fromURIReference()', function () {
+    specify('should correctly convert URI-reference to JSON Pointer ', function () {
+      assert.strictEqual(URIFragmentIdentifier.fromURIReference('path/#/foo/bar'), '/foo/bar');
+      assert.strictEqual(
+        URIFragmentIdentifier.fromURIReference('https://swaggerexpert.com/path/#/foo/bar'),
+        '/foo/bar',
+      );
+      assert.strictEqual(
+        URIFragmentIdentifier.fromURIReference('https://swaggerexpert.com#/path/#/foo/bar'),
+        '/path/#/foo/bar',
+      );
+    });
+  });
 });

@@ -160,6 +160,7 @@ export interface JSONString {
 export interface URIFragmentIdentifier {
   to(jsonPointer: JSONPointer): URIFragmentJSONPointer;
   from(jsonPointer: URIFragmentJSONPointer): JSONPointer
+  fromURIReference(uriReference: string): JSONPointer;
 }
 
 export declare const JSONString: JSONString;

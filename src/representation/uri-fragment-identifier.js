@@ -16,3 +16,10 @@ export const from = (fragment) => {
     return fragment;
   }
 };
+
+export const fromURIReference = (uriReference) => {
+  const fragmentIndex = uriReference.indexOf('#');
+  const fragment = fragmentIndex === -1 ? '#' : uriReference.substring(fragmentIndex);
+
+  return from(fragment);
+};
