@@ -711,6 +711,7 @@ import { URIFragmentIdentifier } from '@swaggerexpert/json-pointer';
 
 URIFragmentIdentifier.to('/foo"bar'); // => '#/foo%22bar'
 URIFragmentIdentifier.from('#/foo%22bar'); // => '/foo"bar'
+URIFragmentIdentifier.fromURIReference('https://swaggerexpert.com/path#/foo%22bar'); // => '/foo"bar'
 ```
 
 #### Errors
