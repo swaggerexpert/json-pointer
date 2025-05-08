@@ -73,7 +73,7 @@ const evaluate = (
           }
         }
 
-        if (strictArrays && !testArrayIndex(referenceToken)) {
+        if (!testArrayIndex(referenceToken)) {
           throw new JSONPointerIndexError(
             `Invalid array index "${referenceToken}" at position ${referenceTokenPosition} in "${jsonPointer}": index MUST be "0", or digits without a leading "0"`,
             {

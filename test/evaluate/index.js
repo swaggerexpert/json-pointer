@@ -120,8 +120,28 @@ describe('evaluate', function () {
       assert.throws(() => evaluate(data, '/foo/01'), JSONPointerIndexError);
     });
 
+    specify(
+      'should throw JSONPointerIndexError for out of bounds index when strictArrays is true',
+      function () {
+        assert.throws(
+          () => evaluate(data, '/foo/1111', { strictArrays: true }),
+          JSONPointerIndexError,
+        );
+      },
+    );
+
+    specify(
+      'should return undefined for out of bounds index when strictArrays is false',
+      function () {
+        assert.strictEqual(evaluate(data, '/foo/-', { strictArrays: false }), undefined);
+      },
+    );
+
     specify('should throw JSONPointerIndexError for "-" when strictArrays is true', function () {
-      assert.throws(() => evaluate(data, '/foo/-', { strictArrays: true }), JSONPointerIndexError);
+      assert.throws(
+        () => evaluate(data, '/foo/1111', { strictArrays: true }),
+        JSONPointerIndexError,
+      );
     });
 
     specify('should return undefined for "-" when strictArrays is false', function () {

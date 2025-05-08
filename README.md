@@ -342,7 +342,7 @@ This spec compliant strict behavior can be disabled by setting the `strictArrays
 ```js
 evaluate(value, '/foo/2', { strictArrays: false }); // => undefined
 evaluate(value, '/foo/-', { strictArrays: false }); // => undefined
-evaluate(value, '/foo/a', { strictArrays: false }); // => undefined
+evaluate(value, '/foo/132423', { strictArrays: false }); // => undefined
 ```
 
 ###### Strict Objects
