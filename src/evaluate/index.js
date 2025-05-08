@@ -105,7 +105,7 @@ const evaluate = (
 
         if (!realm.has(current, referenceToken) && strictArrays) {
           throw new JSONPointerIndexError(
-            `Invalid array index "${referenceToken}" at position ${referenceTokenPosition} in "${jsonPointer}": out of bounds`,
+            `Invalid array index "${referenceToken}" at position ${referenceTokenPosition} in "${jsonPointer}": index not found in array`,
             {
               jsonPointer,
               referenceTokens,

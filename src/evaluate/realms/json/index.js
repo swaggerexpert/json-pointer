@@ -38,7 +38,7 @@ class JSONEvaluationRealm extends EvaluationRealm {
         );
       }
 
-      return indexUint32 < this.sizeOf(node);
+      return indexUint32 < this.sizeOf(node) && Object.prototype.hasOwnProperty.call(node, index);
     }
     if (this.isObject(node)) {
       return Object.prototype.hasOwnProperty.call(node, referenceToken);

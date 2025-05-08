@@ -149,6 +149,23 @@ describe('evaluate', function () {
     });
 
     specify(
+      'should throw JSONPointerIndexError for index not present in sparse array when strictArrays is true',
+      function () {
+        assert.throws(
+          () => evaluate([, , , 4], '/0', { strictArrays: true }),
+          JSONPointerIndexError,
+        );
+      },
+    );
+
+    specify(
+      'should return undefined for index not present in sparse array when strictArrays is false',
+      function () {
+        assert.isUndefined(evaluate([, , , 4], '/0', { strictArrays: false }));
+      },
+    );
+
+    specify(
       'should throw JSONPointerKeyError for accessing chain of object properties that do not exist',
       function () {
         assert.throws(() => evaluate(data, '/missing/key'), JSONPointerKeyError);
