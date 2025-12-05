@@ -80,7 +80,7 @@
     "@babel/core": "=7.28.5",
     "@babel/preset-env": "=7.28.5",
     "@commitlint/cli": "=19.8.1",
-    "@commitlint/config-conventional": "=19.8.1",
+    "@commitlint/config-conventional": "=20.2.0",
     "@swagger-api/apidom-core": "^1.0.0-beta.30",
     "@swagger-api/apidom-ns-openapi-3-0": "^1.0.0-beta.30",
     "apg-js": "^4.4.0",
