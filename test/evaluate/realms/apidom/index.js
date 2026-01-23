@@ -1,6 +1,7 @@
 import { assert } from 'chai';
-import { ObjectElement, MemberElement, toValue } from '@swagger-api/apidom-core';
-import { InfoElement } from '@swagger-api/apidom-ns-openapi-3-0';
+import { ObjectElement, MemberElement } from '@speclynx/apidom-datamodel';
+import { toValue } from '@speclynx/apidom-core';
+import { refractInfo } from '@speclynx/apidom-ns-openapi-3-0';
 
 import {
   evaluate,
@@ -10,7 +11,7 @@ import {
   JSONPointerParseError,
   URIFragmentIdentifier,
 } from '../../../../src/index.js';
-import ApiDOMEvaluationRealm from '../../../../src/evaluate/realms/apidom/index.js';
+import ApiDOMEvaluationRealm from '../../../../contrib/realms/apidom/index.js';
 
 describe('evaluate', function () {
   context('ApiDOM realm', function () {
@@ -84,7 +85,7 @@ describe('evaluate', function () {
 
     context('given ApiDOM namespace element', function () {
       specify('should evaluate', function () {
-        const infoElement = InfoElement.refract({
+        const infoElement = refractInfo({
           contact: {
             name: 'SwaggerExpert',
             email: 'contact@swaggerexpert.com',

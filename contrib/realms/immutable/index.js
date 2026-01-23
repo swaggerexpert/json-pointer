@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import EvaluationRealm from '../EvaluationRealm.js';
+import { EvaluationRealm } from '@swaggerexpert/json-pointer';
 
 const { List, Map } = Immutable;
 

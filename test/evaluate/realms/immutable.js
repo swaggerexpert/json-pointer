@@ -9,7 +9,7 @@ import {
   JSONPointerParseError,
   URIFragmentIdentifier,
 } from '../../../src/index.js';
-import ImmutableEvaluationRealm from '../../../src/evaluate/realms/immutable/index.js';
+import ImmutableEvaluationRealm from '../../../contrib/realms/immutable/index.js';
 
 describe('evaluate', function () {
   const { fromJS } = Immutable;

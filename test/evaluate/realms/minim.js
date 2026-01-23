@@ -9,7 +9,7 @@ import {
   JSONPointerParseError,
   URIFragmentIdentifier,
 } from '../../../src/index.js';
-import MinimEvaluationRealm from '../../../src/evaluate/realms/minim/index.js';
+import MinimEvaluationRealm from '../../../contrib/realms/minim/index.js';
 
 describe('evaluate', function () {
   context('Minim realm', function () {

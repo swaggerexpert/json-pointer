@@ -2,6 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Environment Setup
+
+Before running any commands, ensure you're using the correct Node.js version specified in `.nvmrc`:
+
+```bash
+nvm use                  # Switch to Node.js version from .nvmrc
+```
+
 ## Build Commands
 
 ```bash
@@ -26,14 +34,17 @@ This is an RFC 6901 JSON Pointer implementation providing parsing, validation, e
 
 ### Evaluation Realms
 
-The realm system (`src/evaluate/realms/`) enables polymorphic evaluation across different data structures:
+The realm system enables polymorphic evaluation across different data structures.
 
+**Published realms** (`src/evaluate/realms/`):
 - `json/` - Default realm for plain JS objects/arrays
 - `map-set/` - Supports Map and Set instances
+- `compose.js` - Composes multiple realms (order matters: specific before generic)
+
+**Contrib realms** (`contrib/realms/`) - copy-paste examples, not published:
 - `minim/` - For minim element structures (API description tools)
 - `apidom/` - For ApiDOM structures (OpenAPI/AsyncAPI processing)
 - `immutable/` - For Immutable.js structures
-- `compose.js` - Composes multiple realms (order matters: specific before generic)
 
 Custom realms extend `EvaluationRealm` base class implementing: `isArray`, `isObject`, `sizeOf`, `has`, `evaluate`.
 
