@@ -6,7 +6,7 @@ import {
   JSONPointerIndexError,
   JSONPointerTypeError,
   JSONPointerKeyError,
-  JSONPointerEvaluateError,
+  JSONPointerParseError,
   URIFragmentIdentifier,
 } from '../../../../src/index.js';
 import { evaluate } from '../../../../src/evaluate/realms/apidom/index.js';
@@ -91,8 +91,8 @@ describe('evaluate', function () {
     });
 
     context('invalid JSON Pointers (should throw errors)', function () {
-      specify('should throw JSONPointerEvaluateError for invalid JSON Pointer', function () {
-        assert.throws(() => evaluate(element, 'invalid-pointer'), JSONPointerEvaluateError);
+      specify('should throw JSONPointerParseError for invalid JSON Pointer', function () {
+        assert.throws(() => evaluate(element, 'invalid-pointer'), JSONPointerParseError);
       });
 
       specify(

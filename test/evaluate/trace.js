@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import { evaluate, JSONPointerEvaluateError } from '../../src/index.js';
+import { evaluate, JSONPointerParseError } from '../../src/index.js';
 
 describe('evaluate', function () {
   context('given trace option as object', function () {
@@ -92,10 +92,11 @@ describe('evaluate', function () {
 
       assert.throws(
         () => evaluate({ a: { b: 'c' } }, '1', { trace }),
-        JSONPointerEvaluateError,
+        JSONPointerParseError,
         'Invalid JSON Pointer: "1". Syntax error at position 0, expected "/"',
       );
-      assert.lengthOf(trace.steps, 1);
+      // Parse errors occur before evaluation begins, so trace is not populated
+      assert.notProperty(trace, 'steps');
     });
   });
 
@@ -103,7 +104,7 @@ describe('evaluate', function () {
     specify('should produce error message with tracing info', function () {
       assert.throws(
         () => evaluate({ a: { b: 'c' } }, '1', { trace: true }),
-        JSONPointerEvaluateError,
+        JSONPointerParseError,
         'Invalid JSON Pointer: "1". Syntax error at position 0, expected "/"',
       );
     });
@@ -112,7 +113,7 @@ describe('evaluate', function () {
   specify('should produce error message without tracking info #1', function () {
     assert.throws(
       () => evaluate({ a: { b: 'c' } }, '1'),
-      JSONPointerEvaluateError,
+      JSONPointerParseError,
       'Invalid JSON Pointer: "1". Syntax error at position 0',
     );
   });
@@ -120,7 +121,7 @@ describe('evaluate', function () {
   specify('should produce error message without tracking info #2', function () {
     assert.throws(
       () => evaluate({ a: { b: 'c' } }, '1', { trace: false }),
-      JSONPointerEvaluateError,
+      JSONPointerParseError,
       'Invalid JSON Pointer: "1". Syntax error at position 0',
     );
   });

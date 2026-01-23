@@ -6,7 +6,7 @@ import {
   JSONPointerIndexError,
   JSONPointerTypeError,
   JSONPointerKeyError,
-  JSONPointerEvaluateError,
+  JSONPointerParseError,
   URIFragmentIdentifier,
 } from '../../../src/index.js';
 import MinimEvaluationRealm from '../../../src/evaluate/realms/minim/index.js';
@@ -80,10 +80,10 @@ describe('evaluate', function () {
     });
 
     context('invalid JSON Pointers (should throw errors)', function () {
-      specify('should throw JSONPointerEvaluateError for invalid JSON Pointer', function () {
+      specify('should throw JSONPointerParseError for invalid JSON Pointer', function () {
         assert.throws(
           () => evaluate(element, 'invalid-pointer', { realm }),
-          JSONPointerEvaluateError,
+          JSONPointerParseError,
         );
       });
 

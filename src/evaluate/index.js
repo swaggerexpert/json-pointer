@@ -3,6 +3,7 @@ import testArrayDash from '../test/array-dash.js';
 import testArrayIndex from '../test/array-index.js';
 import TraceBuilder from './trace/TraceBuilder.js';
 import JSONRealm from './realms/json/index.js';
+import JSONPointerParseError from '../errors/JSONPointerParseError.js';
 import JSONPointerEvaluateError from '../errors/JSONPointerEvaluateError.js';
 import JSONPointerTypeError from '../errors/JSONPointerTypeError.js';
 import JSONPointerIndexError from '../errors/JSONPointerIndexError.js';
@@ -19,6 +20,13 @@ const evaluate = (
     trace: parseTrace,
   } = parse(jsonPointer, { trace: !!trace });
 
+  if (!parseResult.success) {
+    let message = `Invalid JSON Pointer: "${jsonPointer}". Syntax error at position ${parseResult.maxMatched}`;
+    message += parseTrace ? `, expected ${parseTrace.inferExpectations()}` : '';
+
+    throw new JSONPointerParseError(message, { jsonPointer });
+  }
+
   const tracer =
     typeof trace === 'object' && trace !== null
       ? new TraceBuilder(trace, {
@@ -33,17 +41,6 @@ const evaluate = (
 
   try {
     let output;
-
-    if (!parseResult.success) {
-      let message = `Invalid JSON Pointer: "${jsonPointer}". Syntax error at position ${parseResult.maxMatched}`;
-      message += parseTrace ? `, expected ${parseTrace.inferExpectations()}` : '';
-
-      throw new JSONPointerEvaluateError(message, {
-        jsonPointer,
-        currentValue: value,
-        realm: realm.name,
-      });
-    }
 
     return referenceTokens.reduce((current, referenceToken, referenceTokenPosition) => {
       if (realm.isArray(current)) {
