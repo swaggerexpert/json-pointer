@@ -5,7 +5,7 @@ import {
   JSONPointerIndexError,
   JSONPointerTypeError,
   JSONPointerKeyError,
-  JSONPointerEvaluateError,
+  JSONPointerParseError,
   URIFragmentIdentifier,
 } from '../../../src/index.js';
 import MapSetEvaluationRealm from '../../../src/evaluate/realms/map-set/index.js';
@@ -76,8 +76,8 @@ describe('evaluate', function () {
     });
 
     context('invalid JSON Pointers (should throw errors)', function () {
-      specify('should throw JSONPointerEvaluateError for invalid JSON Pointer', function () {
-        assert.throws(() => evaluate(data, 'invalid-pointer', { realm }), JSONPointerEvaluateError);
+      specify('should throw JSONPointerParseError for invalid JSON Pointer', function () {
+        assert.throws(() => evaluate(data, 'invalid-pointer', { realm }), JSONPointerParseError);
       });
 
       specify(

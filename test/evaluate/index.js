@@ -5,6 +5,7 @@ import {
   JSONPointerIndexError,
   JSONPointerTypeError,
   JSONPointerKeyError,
+  JSONPointerParseError,
   JSONPointerEvaluateError,
   URIFragmentIdentifier,
 } from '../../src/index.js';
@@ -85,8 +86,8 @@ describe('evaluate', function () {
   });
 
   context('invalid JSON Pointers (should throw errors)', function () {
-    specify('should throw JSONPointerEvaluateError for invalid JSON Pointer', function () {
-      assert.throws(() => evaluate(data, 'invalid-pointer'), JSONPointerEvaluateError);
+    specify('should throw JSONPointerParseError for invalid JSON Pointer', function () {
+      assert.throws(() => evaluate(data, 'invalid-pointer'), JSONPointerParseError);
     });
 
     specify(
