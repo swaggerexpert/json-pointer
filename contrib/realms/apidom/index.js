@@ -1,18 +1,16 @@
-import { ObjectElement, ArrayElement } from 'minim';
+import { isObjectElement, isArrayElement } from '@speclynx/apidom-datamodel';
 
-import EvaluationRealm from '../EvaluationRealm.js';
-import JSONPointerKeyError from '../../../errors/JSONPointerKeyError.js';
-import JSONPointerIndexError from '../../../errors/JSONPointerIndexError.js';
+import { EvaluationRealm, JSONPointerKeyError, JSONPointerIndexError } from '@swaggerexpert/json-pointer';
 
-class MinimEvaluationRealm extends EvaluationRealm {
-  name = 'minim';
+class ApiDOMEvaluationRealm extends EvaluationRealm {
+  name = 'apidom';
 
   isArray(node) {
-    return node instanceof ArrayElement && !(node instanceof ObjectElement);
+    return isArrayElement(node);
   }
 
   isObject(node) {
-    return node instanceof ObjectElement;
+    return isObjectElement(node);
   }
 
   sizeOf(node) {
@@ -68,4 +66,4 @@ class MinimEvaluationRealm extends EvaluationRealm {
   }
 }
 
-export default MinimEvaluationRealm;
+export default ApiDOMEvaluationRealm;

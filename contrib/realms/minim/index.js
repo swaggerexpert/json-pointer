@@ -1,18 +1,16 @@
-import { isObjectElement, isArrayElement } from '@swagger-api/apidom-core';
+import { ObjectElement, ArrayElement } from 'minim';
 
-import EvaluationRealm from '../EvaluationRealm.js';
-import JSONPointerKeyError from '../../../errors/JSONPointerKeyError.js';
-import JSONPointerIndexError from '../../../errors/JSONPointerIndexError.js';
+import { EvaluationRealm, JSONPointerKeyError, JSONPointerIndexError } from '@swaggerexpert/json-pointer';
 
-class ApiDOMEvaluationRealm extends EvaluationRealm {
-  name = 'apidom';
+class MinimEvaluationRealm extends EvaluationRealm {
+  name = 'minim';
 
   isArray(node) {
-    return isArrayElement(node);
+    return node instanceof ArrayElement && !(node instanceof ObjectElement);
   }
 
   isObject(node) {
-    return isObjectElement(node);
+    return node instanceof ObjectElement;
   }
 
   sizeOf(node) {
@@ -68,4 +66,4 @@ class ApiDOMEvaluationRealm extends EvaluationRealm {
   }
 }
 
-export default ApiDOMEvaluationRealm;
+export default MinimEvaluationRealm;

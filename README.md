@@ -44,9 +44,6 @@
       - [Evaluation Realms](#evaluation-realms)
         - [JSON](#json-evaluation-realm)
         - [Map/Set](#mapset-evaluation-realm)
-        - [Minim](#minim-evaluation-realm)
-        - [ApiDOM](#apidom-evaluation-realm)
-        - [Immutable.js](#immutablejs-evaluation-realm)
         - [Custom](#custom-evaluation-realms)
         - [Composing Realms](#composing-evaluation-realms)
       - [Evaluation Diagnostics](#evaluation-diagnostics)
@@ -373,7 +370,7 @@ An **evaluation realm** defines the rules for interpreting and navigating data s
 While JSON Pointer traditionally operates on JSON objects and arrays, evaluation realms allow the evaluation to work
 polymorphically with different data structures, such as [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map),
 [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set), [Immutable.js](https://immutable-js.com/),
-or even custom representations like [ApiDOM](https://github.com/swagger-api/apidom).
+or even custom representations like [SpecLynx ApiDOM](https://github.com/speclynx/apidom).
 Realm can be specified via the `realm` option in the `evalute()` function.
 
 ###### JSON Evaluation Realm
@@ -418,93 +415,6 @@ const map = new Map([
 evaluate(map, '/a/1', { realm: new MapSetEvaluationRealm() }); // => 'c'
 ```
 
-###### Minim Evaluation Realm
-
-The Minim Evaluation Realm extends JSON Pointer evaluation to support `minim` data structures,
-specifically `ObjectElement`, `ArrayElement`, and other element types from the [minim](https://github.com/refractproject/minim).
-
-Minim is widely used in API description languages (e.g., OpenAPI, API Blueprint, AsyncAPI and other API Description processing tools)
-to represent structured API data. The Minim Evaluation Realm enables seamless JSON Pointer traversal for these structures.
-
-Before using the Minim Evaluation Realm, you need to install the `minim` package:
-
-```sh
- $ npm install --save minim
-```
-
-```js
-import { ObjectElement } from 'minim';
-import { evaluate } from '@swaggerexpert/json-pointer';
-import MinimEvaluationRealm from '@swaggerexpert/json-pointer/evaluate/realms/minim';
-
-const objectElement = new ObjectElement({
-  a: ['b', 'c']
-});
-
-evaluate(objectElement, '/a/1', { realm: new MinimEvaluationRealm() }); // => StringElement('c')
-```
-
-###### ApiDOM Evaluation Realm
-
-The [ApiDOM](https://github.com/swagger-api/apidom) Evaluation Realm is an integration layer that enables
-evaluation of JSON Pointer expressions on ApiDOM structures. It provides compatibility with ApiDOM [core](https://github.com/swagger-api/apidom/tree/main/packages/apidom-core) and namespace packages (`@swagger-api/apidom-ns-*`),
-allowing to traverse and query ApiDOM element instances.
-
-Before using the ApiDOM Evaluation Realm, you need to install the `@swagger-api/apidom-core` package:
-
-```sh
- $ npm install --save @swagger-api/apidom-core
-```
-
-```js
-import { ObjectElement } from '@swagger-api/apidom-core';
-import { evaluate } from '@swaggerexpert/json-pointer';
-import ApiDOMEvaluationRealm from '@swaggerexpert/json-pointer/evaluate/realms/apidom';
-
-const objectElement = new ObjectElement({
-  a: ['b', 'c']
-});
-
-evaluate(objectElement, '/a/1', { realm: new ApiDOMEvaluationRealm() }); // => StringElement('c')
-```
-
-or using contextual evaluation:
-
-```js
-import { ObjectElement } from '@swagger-api/apidom-core';
-import { evaluate } from '@swaggerexpert/json-pointer/evaluate/realms/apidom';
-
-const objectElement = new ObjectElement({
-  a: ['b', 'c']
-});
-
-evaluate(objectElement, '/a/1'); // => StringElement('c')
-```
-
-###### Immutable.js Evaluation Realm
-
-The [Immutable.js](https://immutable-js.com/) Evaluation Realm is an integration layer that enables
-evaluation of JSON Pointer expressions on Immutable.js structures.
-
-Before using the Immutable.js Evaluation Realm, you need to install the `immutable` package:
-
-```sh
- $ npm install --save immutable
-```
-
-```js
-import { fromJS } from 'immutable';
-import { evaluate } from '@swaggerexpert/json-pointer';
-import ImmutableEvaluationRealm from '@swaggerexpert/json-pointer/evaluate/realms/immutable';
-
-const map = fromJS({
-  a: ['b', 'c']
-});
-
-evaluate(map, '/a/1', { realm: new ImmutableEvaluationRealm() }); // => 'c'
-```
-
-
 ###### Custom Evaluation Realms
 
 The evaluation is designed to support **custom evaluation realms**,
@@ -529,6 +439,10 @@ class CustomEvaluationRealm extends EvaluationRealm {
 
 evaluate({ a: 'b' }, '/a', { realm: new CustomEvaluationRealm() }); // => 'b'
 ```
+
+Reference implementations for [Minim](https://github.com/refractproject/minim), [SpecLynx ApiDOM](https://github.com/speclynx/apidom),
+and [Immutable.js](https://immutable-js.com/) are available in the [`contrib/realms/`](https://github.com/swaggerexpert/json-pointer/tree/main/contrib/realms) directory.
+These can be copied and adapted for your specific needs.
 
 ###### Composing Evaluation Realms
 

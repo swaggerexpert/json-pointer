@@ -15,10 +15,15 @@
       "import": "./es/index.mjs",
       "require": "./cjs/index.cjs"
     },
-    "./evaluate/realms/*": {
-      "types": "./types/evaluate/realms/*.d.ts",
-      "import": "./es/evaluate/realms/*/index.mjs",
-      "require": "./cjs/evaluate/realms/*/index.cjs"
+    "./evaluate/realms/json": {
+      "types": "./types/evaluate/realms/json.d.ts",
+      "import": "./es/evaluate/realms/json/index.mjs",
+      "require": "./cjs/evaluate/realms/json/index.cjs"
+    },
+    "./evaluate/realms/map-set": {
+      "types": "./types/evaluate/realms/map-set.d.ts",
+      "import": "./es/evaluate/realms/map-set/index.mjs",
+      "require": "./cjs/evaluate/realms/map-set/index.cjs"
     },
     "./package.json": "./package.json"
   },
@@ -33,7 +38,7 @@
     "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir cjs --extensions '.js' --out-file-extension '.cjs'",
     "build:cjs:apg-lite": "cross-env BABEL_ENV=cjs babel node_modules/apg-lite/lib/parser.js --out-file ./cjs/apg-lite.cjs",
     "build:umd:browser": "cross-env BABEL_ENV=browser webpack --config config/webpack/browser.config.js --progress",
-    "test": "mocha",
+    "test": "cross-env NODE_OPTIONS='--import ./test/loader.js' mocha",
     "test:watch": "npm-watch test",
     "watch": "npm-watch"
   },
@@ -81,8 +86,9 @@
     "@babel/preset-env": "=7.28.6",
     "@commitlint/cli": "=20.3.1",
     "@commitlint/config-conventional": "=20.3.1",
-    "@swagger-api/apidom-core": "^1.0.0-beta.30",
-    "@swagger-api/apidom-ns-openapi-3-0": "^1.0.0-beta.30",
+    "@speclynx/apidom-datamodel": "^2.2.2",
+    "@speclynx/apidom-core": "^2.2.2",
+    "@speclynx/apidom-ns-openapi-3-0": "^2.2.2",
     "apg-js": "^4.4.0",
     "babel-loader": "^10.0.0",
     "babel-plugin-module-resolver": "^5.0.2",
