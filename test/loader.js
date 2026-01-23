@@ -1,4 +1,3 @@
 import { register } from 'node:module';
-import { pathToFileURL } from 'node:url';
 
-register('./loader-hooks.js', pathToFileURL('./test/'));
+register('./loader-hooks.js', import.meta.url);

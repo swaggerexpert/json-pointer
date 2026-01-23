@@ -171,12 +171,7 @@ const evaluate = (
       reason: error.message,
     });
 
-    // Check both instanceof and error name to support errors from different package instances
-    // (e.g., contrib realms importing from built package while evaluate runs from source)
-    if (
-      error instanceof JSONPointerEvaluateError ||
-      (error?.name && /^JSONPointer(Type|Key|Index|Evaluate)Error$/.test(error.name))
-    ) {
+    if (error instanceof JSONPointerEvaluateError) {
       throw error;
     }
 
