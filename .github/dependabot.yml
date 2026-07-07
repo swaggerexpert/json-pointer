@@ -12,6 +12,10 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    groups:
+      speclynx-apidom:
+        patterns:
+          - "@speclynx/apidom-*"
 
 
   - package-ecosystem: "github-actions"
