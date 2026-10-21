@@ -85,7 +85,7 @@
     "@babel/core": "=8.0.7",
     "@babel/preset-env": "=8.0.7",
     "@commitlint/cli": "=21.2.4",
-    "@commitlint/config-conventional": "=21.2.3",
+    "@commitlint/config-conventional": "=21.2.4",
     "@speclynx/apidom-datamodel": "^4.16.0",
     "@speclynx/apidom-core": "^4.16.0",
     "@speclynx/apidom-ns-openapi-3-0": "^4.16.0",
