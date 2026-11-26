@@ -19,6 +19,8 @@ npm run grammar:compile  # Compile ABNF grammar to parser (src/grammar.bnf → s
 npm test                 # Run all tests with Mocha
 npm test -- --grep "pattern"  # Run specific tests matching pattern
 npm test -- test/parse/index.js  # Run a single test file
+npm run test:artifacts   # Smoke test built artifacts (es/, cjs/, dist/), run after npm run build
+npm run test:types       # Type check typings as CommonJS and ES module consumers, run after npm run build
 ```
 
 ## Architecture
@@ -57,7 +59,7 @@ Located in `src/parse/translators/`:
 
 ### Error Hierarchy
 
-All errors extend `JSONPointerError`:
+All errors extend `JSONPointerError`. Error classes define their `name` explicitly, as minifiers mangle class names:
 - `JSONPointerParseError` - Invalid pointer syntax
 - `JSONPointerCompileError` - Invalid reference tokens during compilation
 - `JSONPointerEvaluateError` - Base for evaluation errors
