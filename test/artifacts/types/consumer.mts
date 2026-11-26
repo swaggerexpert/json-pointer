@@ -10,3 +10,11 @@ const realm = new MapSetEvaluationRealm();
 const error: Error = new JSONPointerError('message');
 
 export { value, realm, error };
+
+// Grammar is constructed with new, as documented
+import { Grammar } from '@swaggerexpert/json-pointer';
+
+const grammar: Grammar = new Grammar();
+const abnf: string = grammar.toString();
+
+export { abnf };
