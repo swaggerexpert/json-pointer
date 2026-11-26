@@ -1,4 +1,4 @@
-import type { EvaluationRealm } from '../../index.ts';
+import type { EvaluationRealm } from '../../index.js';
 
 export type JSONPrimitive = string | number | boolean | null;
 

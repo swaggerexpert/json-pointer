@@ -11,19 +11,34 @@
   "types": "./types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./types/index.d.ts",
-      "import": "./es/index.mjs",
-      "require": "./cjs/index.cjs"
+      "import": {
+        "types": "./types/index.d.ts",
+        "default": "./es/index.mjs"
+      },
+      "require": {
+        "types": "./types/index.d.cts",
+        "default": "./cjs/index.cjs"
+      }
     },
     "./evaluate/realms/json": {
-      "types": "./types/evaluate/realms/json.d.ts",
-      "import": "./es/evaluate/realms/json/index.mjs",
-      "require": "./cjs/evaluate/realms/json/index.cjs"
+      "import": {
+        "types": "./types/evaluate/realms/json.d.ts",
+        "default": "./es/evaluate/realms/json/index.mjs"
+      },
+      "require": {
+        "types": "./types/evaluate/realms/json.d.cts",
+        "default": "./cjs/evaluate/realms/json/index.cjs"
+      }
     },
     "./evaluate/realms/map-set": {
-      "types": "./types/evaluate/realms/map-set.d.ts",
-      "import": "./es/evaluate/realms/map-set/index.mjs",
-      "require": "./cjs/evaluate/realms/map-set/index.cjs"
+      "import": {
+        "types": "./types/evaluate/realms/map-set.d.ts",
+        "default": "./es/evaluate/realms/map-set/index.mjs"
+      },
+      "require": {
+        "types": "./types/evaluate/realms/map-set.d.cts",
+        "default": "./cjs/evaluate/realms/map-set/index.cjs"
+      }
     },
     "./package.json": "./package.json"
   },
@@ -33,12 +48,14 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "grammar:compile": "node ./scripts/apg-js.js --lite --in=./src/grammar.bnf --out=./src/grammar.js && cd ./src",
-    "build": "npm run grammar:compile && npm run build:es && npm run build:cjs && npm run build:cjs:apg-lite && npm run build:umd:browser",
+    "build": "npm run grammar:compile && npm run build:es && npm run build:cjs && npm run build:cjs:apg-lite && npm run build:types && npm run build:umd:browser",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --extensions '.js' --out-file-extension '.mjs'",
     "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir cjs --extensions '.js' --out-file-extension '.cjs'",
     "build:cjs:apg-lite": "cross-env BABEL_ENV=cjs babel node_modules/apg-lite/lib/parser.js --out-file ./cjs/apg-lite.cjs",
+    "build:types": "node ./scripts/build-types.cjs",
     "build:umd:browser": "cross-env BABEL_ENV=browser webpack --config config/webpack/browser.config.js --progress",
     "test": "cross-env NODE_OPTIONS='--import ./test/loader.js' mocha",
+    "test:types": "tsc --noEmit --strict --skipLibCheck false --module node16 --moduleResolution node16 --target es2020 test/artifacts/types/consumer.cts test/artifacts/types/consumer.mts && tsc --noEmit --strict --module esnext --moduleResolution bundler --target es2020 test/artifacts/types/consumer.mts",
     "test:watch": "npm-watch test",
     "watch": "npm-watch"
   },
@@ -86,14 +103,14 @@
     "@babel/preset-env": "=8.0.7",
     "@commitlint/cli": "=21.2.4",
     "@commitlint/config-conventional": "=21.2.4",
-    "@speclynx/apidom-datamodel": "^7.1.0",
-    "@speclynx/apidom-core": "^7.1.0",
-    "@speclynx/apidom-ns-openapi-3-0": "^7.1.0",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^11.0.1",
     "@semantic-release/github": "^12.0.11",
     "@semantic-release/npm": "^13.2.0",
     "@semantic-release/release-notes-generator": "^14.1.1",
+    "@speclynx/apidom-core": "^7.1.0",
+    "@speclynx/apidom-datamodel": "^7.1.0",
+    "@speclynx/apidom-ns-openapi-3-0": "^7.1.0",
     "apg-js": "^4.4.0",
     "babel-loader": "^10.1.1",
     "babel-plugin-module-resolver": "^5.0.3",
@@ -107,6 +124,7 @@
     "prettier": "^3.10.1",
     "semantic-release": "^26.0.1",
     "terser-webpack-plugin": "^5.6.1",
+    "typescript": "^7.0.2",
     "webpack": "^5.113.0",
     "webpack-cli": "^7.3.1"
   }
