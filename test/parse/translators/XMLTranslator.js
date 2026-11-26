@@ -32,6 +32,17 @@ describe('parse', function () {
             '</root>\n',
         );
       });
+
+      specify('should escape XML special characters', function () {
+        const parseResult = parse('/</node><x>&"\'', { translator: new XMLTranslator() });
+
+        assert.isTrue(parseResult.result.success);
+        assert.include(parseResult.tree, '&lt;/node&gt;&lt;x&gt;&amp;&quot;&apos;');
+        assert.notInclude(parseResult.tree, '</node><x>');
+        // & is allowed in XML comments, e.g. in the caveat comment of apg-lite
+        const withoutComments = parseResult.tree.replace(/<!--[\s\S]*?-->/g, '');
+        assert.notMatch(withoutComments, /&(?!amp;|lt;|gt;|quot;|apos;)/);
+      });
     });
   });
 });
