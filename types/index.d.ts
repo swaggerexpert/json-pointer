@@ -83,8 +83,8 @@ export interface Trace {
 /**
  * Testing
  */
-export function testJSONPointer(jsonPointer: string): jsonPointer is JSONPointer;
-export function testReferenceToken(referenceToken: string): referenceToken is ReferenceToken;
+export function testJSONPointer(jsonPointer: string): boolean;
+export function testReferenceToken(referenceToken: string): boolean;
 export function testArrayLocation(referenceToken: string): referenceToken is ArrayLocation;
 export function testArrayIndex(referenceToken: string): referenceToken is ArrayIndex;
 export function testArrayDash(referenceToken: string): referenceToken is ArrayDash;
