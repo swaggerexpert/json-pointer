@@ -18,3 +18,18 @@ const grammar: Grammar = new Grammar();
 const abnf: string = grammar.toString();
 
 export { abnf };
+
+// invalid input is not narrowed to never
+import { testJSONPointer, testReferenceToken } from '@swaggerexpert/json-pointer';
+
+declare const candidate: string;
+
+if (!testJSONPointer(candidate)) {
+  const invalidPointer: string = candidate;
+  // @ts-expect-error invalid JSON Pointer is still a string
+  const impossible: never = candidate;
+}
+if (!testReferenceToken(candidate)) {
+  // @ts-expect-error invalid reference token is still a string
+  const impossible: never = candidate;
+}
