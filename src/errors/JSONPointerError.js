@@ -39,4 +39,9 @@ class JSONPointerError extends Error {
   }
 }
 
+/**
+ * Class names are not reliable at runtime, as minifiers mangle them.
+ */
+Object.defineProperty(JSONPointerError, 'name', { value: 'JSONPointerError' });
+
 export default JSONPointerError;
