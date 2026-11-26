@@ -13,6 +13,11 @@ describe('parse', function () {
           parseResult.tree,
           '<?xml version="1.0" encoding="utf-8"?>\n' +
             '<root nodes="3" characters="1">\n' +
+            '<!--\n' +
+            '  Caveat: AST node phrases may not be faithfully represented.\n' +
+            '          Invalid XML characters are replaced with 0xFFFD.\n' +
+            '          Special characters &<>"\' are escaped with XML entities.\n' +
+            '-->\n' +
             '<!-- input string -->\n' +
             '  /\n' +
             ' <node name="json-pointer" index="0" length="1">\n' +
