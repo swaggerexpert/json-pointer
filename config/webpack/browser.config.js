@@ -10,6 +10,8 @@ const browser = {
     filename: 'json-pointer.browser.js',
     libraryTarget: 'umd',
     library: 'JSONPointer',
+    // works in browsers, web workers and CommonJS (where self is not defined)
+    globalObject: "typeof self !== 'undefined' ? self : this",
   },
   resolve: {
     extensions: ['.js'],
@@ -40,6 +42,8 @@ const browserMin = {
     filename: 'json-pointer.browser.min.js',
     libraryTarget: 'umd',
     library: 'JSONPointer',
+    // works in browsers, web workers and CommonJS (where self is not defined)
+    globalObject: "typeof self !== 'undefined' ? self : this",
   },
   resolve: {
     extensions: ['.js'],
