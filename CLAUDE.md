@@ -72,4 +72,4 @@ The build produces three formats:
 - `cjs/` - CommonJS (.cjs)
 - `dist/` - UMD browser bundles (json-pointer.browser.js, json-pointer.browser.min.js)
 
-TypeScript types are in `types/index.d.ts`.
+TypeScript types are in `types/`; the build generates gitignored `.d.cts` copies for the `require` export conditions.

@@ -6,3 +6,4 @@ node_modules/
 /es
 /dist
 /swaggerexpert-json-pointer-*.tgz
+/types/**/*.d.cts
