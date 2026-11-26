@@ -169,9 +169,8 @@ export declare const URIFragmentIdentifier: URIFragmentIdentifier;
 /**
  * Grammar
  */
-export function Grammar(): Grammar;
-
-export interface Grammar {
+export declare class Grammar {
+  constructor();
   grammarObject: string; // Internal identifier
   rules: Rule[]; // List of grammar rules
   udts: UDT[]; // User-defined terminals (empty in this grammar)
